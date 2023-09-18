@@ -63,18 +63,35 @@ const updateAddOrSell = async (operationId, body) => {
     return null;
   }
   const operation = data[0].operation.find((elem) => elem.id === operationId);
-  data[0].operation[index] = {
+
+  const updatedOperation = {
     ...operation,
-    add,
-    sell,
     category,
     comment,
   };
+
+  if (add) {
+    updatedOperation.add = Number(add);
+  }
+
+  if (sell) {
+    updatedOperation.sell = Number(sell);
+  }
+
   data[0].total = add
-    ? data[0].total - operation.add + Number(add)
-    : data[0].total + operation.sell - Number(sell);
+    ? data[0].total - Number(operation.add) + Number(add)
+    : data[0].total + Number(operation.sell) - Number(sell);
+
+  data[0].operation[index] = updatedOperation;
   updateCash(data);
   return data[0].operation[index];
+};
+
+const resetCash = async () => {
+  const data = await getAllCash();
+  data[0].total = 0;
+  updateCash(data);
+  return data[0].total;
 };
 
 module.exports = {
@@ -83,6 +100,7 @@ module.exports = {
   sellCash,
   removeAddOrSell,
   updateAddOrSell,
+  resetCash,
 };
 
 // [

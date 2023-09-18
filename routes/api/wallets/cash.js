@@ -69,4 +69,15 @@ routerCash.put("/:operationId", async (req, res, next) => {
   });
 });
 
+routerCash.patch("/", async (req, res, next)=>{
+  const result = await cashOperation.resetCash();
+  res.status(200).json({
+    status: 'success',
+    message: "Cash removed, total is 0",
+    data: {
+      result
+    }
+  })
+})
+
 module.exports = routerCash;

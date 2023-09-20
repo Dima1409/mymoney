@@ -1,83 +1,46 @@
 const express = require("express");
 const routerCash = express.Router();
+const { cash } = require("../../../controllers");
+const { validation, ctrlWrapper } = require("../../../middlewares");
+const {
+  cashAddSchema,
+  cashSellSchema,
+  cashAddSchemaUpdate,
+  cashSellSchemaUpdate,
+  arrayOfCategoriesAdd,
+  arrayOfCategoriesSell,
+  updateCashSchema,
+} = require("../../../schemas");
+const combinedSchema = cashAddSchemaUpdate || cashSellSchemaUpdate;
 
-const cashOperation = require("../../../models/wallets/cash");
+routerCash.get("/", ctrlWrapper(cash.getAll));
 
-routerCash.get("/", async (req, res, next) => {
-  const cash = await cashOperation.getAllCash();
-  res.status(200).json({
-    status: "success",
-    data: {
-      cash,
-    },
-  });
-});
+routerCash.post("/add", validation(cashAddSchema), ctrlWrapper(cash.addCash));
 
-routerCash.post("/add", async (req, res, next) => {
-  const addCash = await cashOperation.addCash(req.body);
-  res.status(201).json({
-    status: "success",
-    message: "Cash added",
-    data: {
-      addCash,
-    },
-  });
-});
+routerCash.post(
+  "/sell",
+  validation(cashSellSchema),
+  ctrlWrapper(cash.sellCash)
+);
 
-routerCash.post("/sell", async (req, res, next) => {
-  const sellCash = await cashOperation.sellCash(req.body);
-  res.status(201).json({
-    status: "success",
-    message: "Cash sell",
-    data: {
-      sellCash,
-    },
-  });
-});
+routerCash.delete("/:operationId", ctrlWrapper(cash.deleteOperation));
 
-routerCash.delete("/:operationId", async (req, res, next) => {
-  const { operationId } = req.params;
-  const result = await cashOperation.removeAddOrSell(operationId);
-  if (!result) {
-    return next(
-      NotFound(`Operation with id=${operationId} not found, not deleted`)
-    );
-  }
-  res.status(200).json({
-    status: "success",
-    message: `Operation with id=${operationId} deleted, cash updated`,
-    data: {
-      result,
-    },
-  });
-});
+routerCash.put(
+  "/:operationId",
+  (req, res, next) => {
+    const selectedSchema = req.body.sell
+      ? cashSellSchemaUpdate
+      : cashAddSchemaUpdate;
+    validation(selectedSchema);
+    next();
+  },
+  ctrlWrapper(cash.updateOperation)
+);
 
-routerCash.put("/:operationId", async (req, res, next) => {
-  const { operationId } = req.params;
-  const result = await cashOperation.updateAddOrSell(operationId, req.body);
-  if (!result) {
-    return next(
-      NotFound(`Operation with id=${operationId} not found, not updated`)
-    );
-  }
-  res.status(200).json({
-    status: "success",
-    message: "Operation updated",
-    data: {
-      result,
-    },
-  });
-});
-
-routerCash.patch("/", async (req, res, next)=>{
-  const result = await cashOperation.resetCash();
-  res.status(200).json({
-    status: 'success',
-    message: "Cash removed, total is 0",
-    data: {
-      result
-    }
-  })
-})
+routerCash.patch(
+  "/",
+  validation(updateCashSchema),
+  ctrlWrapper(cash.updateCash)
+);
 
 module.exports = routerCash;

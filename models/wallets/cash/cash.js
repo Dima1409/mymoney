@@ -87,20 +87,21 @@ const updateAddOrSell = async (operationId, body) => {
   return data[0].operation[index];
 };
 
-const resetCash = async () => {
+const editCash = async (value) => {
   const data = await getAllCash();
-  data[0].total = 0;
+  data[0].total = value;
   updateCash(data);
   return data[0].total;
 };
 
 module.exports = {
+  updateCash,
   getAllCash,
   addCash,
   sellCash,
   removeAddOrSell,
   updateAddOrSell,
-  resetCash,
+  editCash,
 };
 
 // [

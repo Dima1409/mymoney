@@ -11,7 +11,7 @@ const {
   arrayOfCategoriesSell,
   updateCashSchema,
 } = require("../../../schemas");
-const combinedSchema = cashAddSchemaUpdate || cashSellSchemaUpdate;
+// const combinedSchema = cashAddSchemaUpdate || cashSellSchemaUpdate;
 
 routerCash.get("/", ctrlWrapper(cash.getAll));
 

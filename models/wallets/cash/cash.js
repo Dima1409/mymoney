@@ -1,7 +1,6 @@
 const fs = require("fs/promises");
 const path = require("path");
 const { v4 } = require("uuid");
-
 const Path = path.join(__dirname, "cash.json");
 
 const updateCash = async (data) => {
@@ -17,7 +16,12 @@ const getAllCash = async () => {
 const addCash = async (body) => {
   const data = await getAllCash();
   const { add, category, comment } = body;
-  const newCash = { id: v4(), add: Number(add), category, comment };
+  const newCash = {
+    id: v4(),
+    add: Number(add),
+    category,
+    comment: comment ? comment : "",
+  };
   const operation = data[0]?.operation || [];
   operation.push(newCash);
   data[0].total = (data[0].total || 0) + newCash.add;
@@ -32,7 +36,7 @@ const sellCash = async (body) => {
     id: v4(),
     sell: Number(sell),
     category,
-    comment,
+    comment: comment ? comment : "",
   };
   const operation = data[0]?.operation || [];
   operation.push(newCash);
@@ -67,7 +71,7 @@ const updateAddOrSell = async (operationId, body) => {
   const updatedOperation = {
     ...operation,
     category,
-    comment,
+    comment: comment ? comment : "",
   };
 
   if (add) {

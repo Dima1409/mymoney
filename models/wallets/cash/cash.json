@@ -1,1 +1,8 @@
-[{"total":0,"operation":[{"id":"b84e1e19-de19-40ca-87f3-3a9ca1502857","add":900,"category":"salary"},{"id":"9479d026-447d-4028-9b79-cb1f676c84cc","sell":2500,"category":"car","comment":"beer"},{"id":"a755e53f-ea93-4cf7-9893-cfd10e5819d6","add":100,"category":"salary","comment":"premy"},{"id":"52aa607b-b9ca-4199-bba3-acf3be1c0f33","add":100,"category":"salary","comment":"premy"},{"id":"54bf8809-b3e3-4488-b911-0cd1d013611c","sell":50,"category":"food","comment":"pizza"},{"id":"c26f466b-b074-460c-9608-c7ed8175e93e","sell":20,"category":"car","comment":"oil"},{"id":"c52de675-0e27-4062-9add-5a2d878c9f0a","add":100,"category":"salary","comment":"premy"},{"id":"792d1b45-7cc5-4458-ad68-4035c735ff58","add":100,"category":"salary","comment":"premy"},{"id":"ada6049f-e73a-475a-93db-cbf3929ca984","add":100,"category":"salary","comment":"premy"},{"id":"0d43eb19-6289-4436-8808-8116c3c968ca","add":100,"category":"salary","comment":"premy"}]}]
+[
+    {
+        "total": 0,
+        "operation": [
+           
+        ]
+    }
+]

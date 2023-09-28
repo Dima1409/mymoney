@@ -1,5 +1,6 @@
 const express = require("express");
 const routerCash = express.Router();
+// const ctrlCash = require("../../../controllers")
 const { cash } = require("../../../controllers");
 const { validation, ctrlWrapper } = require("../../../middlewares");
 const {
@@ -11,36 +12,35 @@ const {
   arrayOfCategoriesSell,
   updateCashSchema,
 } = require("../../../schemas");
-// const combinedSchema = cashAddSchemaUpdate || cashSellSchemaUpdate;
 
-routerCash.get("/", ctrlWrapper(cash.getAll));
+routerCash.get("/", cash.getCash);
 
-routerCash.post("/add", validation(cashAddSchema), ctrlWrapper(cash.addCash));
+// routerCash.post("/add", validation(cashAddSchema), ctrlWrapper(cash.addCash));
 
-routerCash.post(
-  "/sell",
-  validation(cashSellSchema),
-  ctrlWrapper(cash.sellCash)
-);
+// routerCash.post(
+//   "/sell",
+//   validation(cashSellSchema),
+//   ctrlWrapper(cash.sellCash)
+// );
 
-routerCash.delete("/:operationId", ctrlWrapper(cash.deleteOperation));
+// routerCash.delete("/:operationId", ctrlWrapper(cash.deleteOperation));
 
-routerCash.put(
-  "/:operationId",
-  (req, res, next) => {
-    const selectedSchema = req.body.sell
-      ? cashSellSchemaUpdate
-      : cashAddSchemaUpdate;
-    validation(selectedSchema);
-    next();
-  },
-  ctrlWrapper(cash.updateOperation)
-);
+// routerCash.put(
+//   "/:operationId",
+//   (req, res, next) => {
+//     const selectedSchema = req.body.sell
+//       ? cashSellSchemaUpdate
+//       : cashAddSchemaUpdate;
+//     validation(selectedSchema);
+//     next();
+//   },
+//   ctrlWrapper(cash.updateOperation)
+// );
 
-routerCash.patch(
-  "/",
-  validation(updateCashSchema),
-  ctrlWrapper(cash.updateCash)
-);
+// routerCash.patch(
+//   "/",
+//   validation(updateCashSchema),
+//   ctrlWrapper(cash.updateCash)
+// );
 
 module.exports = routerCash;

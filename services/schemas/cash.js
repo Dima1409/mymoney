@@ -24,6 +24,6 @@ const cashSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-const Cash = model("cash", cashSchema);
+const Cash = model("money", cashSchema);
 
 module.exports = Cash;

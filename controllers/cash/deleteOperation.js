@@ -1,9 +1,9 @@
-const cashOperation = require("../../models/wallets/cash");
+const service = require("../../services/cash/index");
 const { NotFound } = require("http-errors");
 
 const deleteOperation = async (req, res, next) => {
   const { operationId } = req.params;
-  const result = await cashOperation.removeAddOrSell(operationId);
+  const result = await service.deleteOperation(operationId);
   if (!result) {
     return next(
       NotFound(`Operation with id=${operationId} not found, not deleted`)

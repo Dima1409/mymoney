@@ -1,12 +1,12 @@
-const cashOperation = require("../../models/wallets/cash");
+const service = require("../../services/cash");
 
 const addCash = async (req, res, next) => {
-  const addCash = await cashOperation.addCash(req.body);
+  const addNew = await service.addCash({...req.body});
   res.status(201).json({
     status: "success",
     message: "Cash added",
     data: {
-      addCash,
+      addNew,
     },
   });
 };

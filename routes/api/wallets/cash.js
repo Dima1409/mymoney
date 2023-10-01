@@ -4,26 +4,17 @@ const routerCash = express.Router();
 const { cash } = require("../../../controllers");
 const { validation, ctrlWrapper } = require("../../../middlewares");
 const {
-  cashAddSchema,
-  cashSellSchema,
-  cashAddSchemaUpdate,
-  cashSellSchemaUpdate,
-  arrayOfCategoriesAdd,
-  arrayOfCategoriesSell,
-  updateCashSchema,
-} = require("../../../schemas");
+  joiCashAddSchema,
+  joiCashSellSchema,
+} = require("../../../models/wallets/cash/cash");
 
 routerCash.get("/", cash.getCash);
 
-// routerCash.post("/add", validation(cashAddSchema), ctrlWrapper(cash.addCash));
+routerCash.post("/add", validation(joiCashAddSchema), ctrlWrapper(cash.addCash));
 
-// routerCash.post(
-//   "/sell",
-//   validation(cashSellSchema),
-//   ctrlWrapper(cash.sellCash)
-// );
+routerCash.post("/sell", validation(joiCashSellSchema), ctrlWrapper(cash.sellCash));
 
-// routerCash.delete("/:operationId", ctrlWrapper(cash.deleteOperation));
+routerCash.delete("/:operationId", ctrlWrapper(cash.deleteOperation));
 
 // routerCash.put(
 //   "/:operationId",

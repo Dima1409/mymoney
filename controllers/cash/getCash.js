@@ -1,18 +1,4 @@
-// const cashOperation = require("../../models/wallets/cash");
-
-// const getAll = async (req, res, next) => {
-//   const cash = await cashOperation.getAllCash();
-//   res.status(200).json({
-//     status: "success",
-//     data: {
-//       cash,
-//     },
-//   });
-// };
-
-// module.exports = { getAll };
-
-const service = require("../../services");
+const service = require("../../services/cash/index");
 
 const getCash = async (req, res, next) => {
   try {

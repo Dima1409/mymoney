@@ -1,7 +1,7 @@
-const cashOperation = require("../../models/wallets/cash");
+const service = require("../../services/cash");
 
 const sellCash = async (req, res, next) => {
-  const sellCash = await cashOperation.sellCash(req.body);
+  const sellCash = await service.sellCash({...req.body});
   res.status(201).json({
     status: "success",
     message: "Cash sell",

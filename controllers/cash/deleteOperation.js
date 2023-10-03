@@ -1,4 +1,4 @@
-const service = require("../../services/cash/index");
+const service = require("../../services/cash");
 const { NotFound } = require("http-errors");
 
 const deleteOperation = async (req, res, next) => {

@@ -1,34 +1,33 @@
-const { Cash } = require("../../models/wallets/cash/cash");
+const { operationsModels } = require("../../models");
+const cash = operationsModels.Cash;
 
 const getAllCash = async () => {
-  const result = await Cash.find();
+  const result = await cash.find();
   return result;
 };
 
 const addCash = async (body) => {
-  let tot = await Cash.findOne(
-    { _id: "6519cef60358d27ac9754fcf" },
-    { total: 1 }
-  );
-  const newAdd = await Cash.create({ ...body });
-  console.log(tot);
+  const newAdd = await cash.create({ ...body });
   return newAdd;
 };
 
 const sellCash = async (body) => {
-  const newSell = await Cash.create({ ...body });
+  const newSell = await cash.create({ ...body });
   return newSell;
 };
 
 const deleteOperation = async (id) => {
-  const result = await Cash.findByIdAndRemove(id);
+  const result = await cash.findByIdAndRemove(id);
   return result;
 };
 
-const updateOperation = async (id, body ) => {
-  const result = await Cash.findByIdAndUpdate(id, body);
+const updateOperation = async (id, body) => {
+  const result = await cash.findOneAndUpdate(id, body, {
+    new: true,
+  });
   return result;
 };
+
 module.exports = {
   getAllCash,
   addCash,

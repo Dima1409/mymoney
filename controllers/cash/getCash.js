@@ -1,4 +1,4 @@
-const service = require("../../services/cash/index");
+const service = require("../../services/cash");
 
 const getCash = async (req, res, next) => {
   try {

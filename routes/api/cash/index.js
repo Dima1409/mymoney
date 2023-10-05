@@ -2,7 +2,7 @@ const express = require("express");
 const routerCash = express.Router();
 const { cash } = require("../../../controllers");
 const { validation, ctrlWrapper } = require("../../../middlewares");
-const {operationsModels} = require("../../../models");
+const { operationsModels } = require("../../../models");
 
 routerCash.get("/", cash.getCash);
 

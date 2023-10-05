@@ -1,8 +1,8 @@
 const { operationsModels } = require("./operations");
 
-const { cashWallet } = require("./wallets");
+const { WalletSchema } = require("./wallets");
 
 module.exports = {
   operationsModels,
-  cashWallet,
+  WalletSchema,
 };

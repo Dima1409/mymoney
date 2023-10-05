@@ -51,12 +51,11 @@ const cashSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-const Cash = model("money", cashSchema);
+const Cash = model("operation", cashSchema);
 
 module.exports = {
   Cash,
   joiCashAddSchema,
   joiCashSellSchema,
-  joiCashUpdateSchema
+  joiCashUpdateSchema,
 };
-

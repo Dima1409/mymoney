@@ -1,4 +1,3 @@
-const { number } = require("joi");
 const { model, Schema } = require("mongoose");
 
 const walletSchema = new Schema({

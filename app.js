@@ -2,18 +2,19 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 
-const { routerCash, routerWallets } = require("./routes/api");
+const { routerCash, routerWallets, routerCategories } = require("./routes/api");
 
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
-            
+
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
 app.use("/api/wallets/operation", routerCash);
 app.use("/api/wallets/total", routerWallets);
+app.use("/api/categories", routerCategories);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });

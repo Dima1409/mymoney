@@ -20,6 +20,12 @@ const joiCashSellSchema = Joi.object({
   comment: Joi.string().empty("").min(2).max(20),
 });
 
+const joiCashTransferSchema = Joi.object({
+  transfer: Joi.number().required(),
+  from: Joi.string().required(),
+  to: Joi.string().required(),
+});
+
 const joiCashUpdateSchema = Joi.object({
   add: Joi.number(),
   sell: Joi.number(),
@@ -57,5 +63,6 @@ module.exports = {
   Cash,
   joiCashAddSchema,
   joiCashSellSchema,
+  joiCashTransferSchema,
   joiCashUpdateSchema,
 };

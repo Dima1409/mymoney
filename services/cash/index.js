@@ -28,6 +28,9 @@ const updateOperation = async (id, body) => {
   return result;
 };
 
+const transferOperation = async (id, body) => {
+  const walletFrom = await cash.findById(id);
+}
 module.exports = {
   getAllCash,
   addCash,

@@ -1,17 +1,14 @@
 const { model, Schema } = require("mongoose");
 
 const categoriesSchema = new Schema({
-  categories: {
-    type: String,
-    required: true,
-    unique: true,
+  add: {
+    type: [String],
+    default: ["work", "business", "extra-work"],
   },
-  add: [{
-    type: String,
-  }],
-  sell: [{
-    type: String,
-  }],
+  sell: {
+    type: [String],
+    default: ["food", "hobby", "car"],
+  },
 });
 
 const CategoriesSchema = model("category", categoriesSchema);

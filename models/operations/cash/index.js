@@ -2,37 +2,41 @@ const { model, Schema } = require("mongoose");
 const Joi = require("joi");
 
 const joiCashAddSchema = Joi.object({
-  add: Joi.number().required(),
+  amount: Joi.number().required(),
+  wallet: Joi.string().required(),
   category: Joi.string().required(),
   comment: Joi.string().empty("").min(2).max(20),
 });
 
 const joiCashSellSchema = Joi.object({
-  sell: Joi.number().required(),
+  amount: Joi.number().required(),
+  wallet: Joi.string().required(),
   category: Joi.string().required(),
   comment: Joi.string().empty("").min(2).max(20),
 });
 
-const joiCashTransferSchema = Joi.object({
-  transfer: Joi.number().required(),
-  from: Joi.string().required(),
-  to: Joi.string().required(),
-});
+// const joiCashTransferSchema = Joi.object({
+//   transfer: Joi.number().required(),
+//   from: Joi.string().required(),
+//   to: Joi.string().required(),
+// });
 
-const joiCashUpdateSchema = Joi.object({
-  add: Joi.number(),
-  sell: Joi.number(),
-  category: Joi.string().required(),
-  comment: Joi.string().empty("").min(2).max(20),
-});
+// const joiCashUpdateSchema = Joi.object({
+//   add: Joi.number(),
+//   sell: Joi.number(),
+//   wallet: Joi.string().required(),
+//   category: Joi.string().required(),
+//   comment: Joi.string().empty("").min(2).max(20),
+// });
 
 const cashSchema = new Schema(
   {
-    add: {
+    amount: {
       type: Number,
     },
-    sell: {
-      type: Number,
+    wallet: {
+      type: String,
+      required: [true, "Field is required"],
     },
     category: {
       type: String,
@@ -53,6 +57,4 @@ module.exports = {
   Cash,
   joiCashAddSchema,
   joiCashSellSchema,
-  joiCashTransferSchema,
-  joiCashUpdateSchema,
 };

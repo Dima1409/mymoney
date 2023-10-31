@@ -1,4 +1,5 @@
 const { operationsModels } = require("../../models");
+const { updateWalletTotal } = require("../wallets");
 const cash = operationsModels.Cash;
 
 const getAllCash = async () => {
@@ -7,13 +8,25 @@ const getAllCash = async () => {
 };
 
 const addCash = async (body) => {
-  const newAdd = await cash.create({ ...body });
-  return newAdd;
+  try {
+    const { wallet, amount } = body;
+    await updateWalletTotal(wallet.toLowerCase(), amount, "add");
+    const newAdd = await cash.create({ ...body });
+    return newAdd;
+  } catch (error) {
+    throw new Error(`Error adding Cash: ${error.message}`);
+  }
 };
 
 const sellCash = async (body) => {
-  const newSell = await cash.create({ ...body });
-  return newSell;
+  try {
+    const { wallet, amount } = body;
+    await updateWalletTotal(wallet.toLowerCase(), amount, "sell");
+    const newSell = await cash.create({ ...body });
+    return newSell;
+  } catch (error) {
+    throw new Error(`Error selling Cash: ${error.message}`);
+  }
 };
 
 const deleteOperation = async (id) => {
@@ -28,9 +41,6 @@ const updateOperation = async (id, body) => {
   return result;
 };
 
-const transferOperation = async (id, body) => {
-  const walletFrom = await cash.findById(id);
-}
 module.exports = {
   getAllCash,
   addCash,

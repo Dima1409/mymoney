@@ -1,11 +1,14 @@
 const { model, Schema } = require("mongoose");
 
 const walletSchema = new Schema({
-  cash: {
-    total: Number,
+  name: {
+    type: String,
+    required: true,
   },
-  card: {
-    total: Number,
+  total: {
+    type: Number,
+    required: true,
+    default: 0,
   },
 });
 

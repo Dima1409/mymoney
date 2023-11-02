@@ -3,6 +3,7 @@ const Joi = require("joi");
 
 const joiCashAddSchema = Joi.object({
   amount: Joi.number().required(),
+  type: Joi.boolean().required(),
   wallet: Joi.string().required(),
   category: Joi.string().required(),
   comment: Joi.string().empty("").min(2).max(20),
@@ -10,6 +11,7 @@ const joiCashAddSchema = Joi.object({
 
 const joiCashSellSchema = Joi.object({
   amount: Joi.number().required(),
+  type: Joi.boolean().required(),
   wallet: Joi.string().required(),
   category: Joi.string().required(),
   comment: Joi.string().empty("").min(2).max(20),
@@ -34,8 +36,8 @@ const cashSchema = new Schema(
     amount: {
       type: Number,
     },
-    operationType: {
-      type: String,
+    type: {
+      type: Boolean,
       required: [true, "Field is required"],
     },
     wallet: {

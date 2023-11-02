@@ -34,8 +34,8 @@ const cashSchema = new Schema(
     amount: {
       type: Number,
     },
-    type: {
-      type: Number,
+    operationType: {
+      type: String,
       required: [true, "Field is required"],
     },
     wallet: {

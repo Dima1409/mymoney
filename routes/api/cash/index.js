@@ -1,6 +1,6 @@
 const express = require("express");
 const routerCash = express.Router();
-const { cash } = require("../../../controllers");
+const { cash, wallets } = require("../../../controllers");
 const { validation, ctrlWrapper } = require("../../../middlewares");
 const { operationsModels } = require("../../../models");
 
@@ -9,7 +9,8 @@ routerCash.get("/", cash.getCash);
 routerCash.post(
   "/add",
   validation(operationsModels.joiCashAddSchema),
-  ctrlWrapper(cash.addCash)
+  ctrlWrapper(cash.addCash),
+  ctrlWrapper(wallets.updateTotal)
 );
 
 routerCash.post(

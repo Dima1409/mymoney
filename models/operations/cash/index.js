@@ -35,7 +35,7 @@ const cashSchema = new Schema(
       type: Number,
     },
     type: {
-      type: Boolean,
+      type: number,
       required: [true, "Field is required"],
     },
     wallet: {

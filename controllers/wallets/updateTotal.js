@@ -2,11 +2,11 @@ const service = require("../../services/wallets");
 
 const updateTotal = async (req, res, next) => {
   try {
-    const { walletName, amount, operationType } = req.body;
+    const { wallet, amount, type } = req.body;
     const result = await service.updateWalletTotal(
-      walletName,
+      wallet,
       amount,
-      operationType
+      type
     );
     res.json({
       status: "success",

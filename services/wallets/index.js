@@ -5,11 +5,8 @@ const getAllWallets = async () => {
   return result;
 };
 const updateWalletTotal = async (wallet, amount, type) => {
-  console.log("Wallet name",wallet);
   try {
     const existingWallet = await WalletSchema.find({ name: { $regex: new RegExp('^' + wallet, 'i') } });
-    // const existingWallet = await WalletSchema.findOne({ name: wallet });
-    console.log("existingWallet", existingWallet);
     if (!existingWallet) {
       throw new Error("Wallet not found");
     }

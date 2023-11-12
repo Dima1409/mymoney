@@ -31,6 +31,8 @@ const sellCash = async (body) => {
 
 const deleteOperation = async (id) => {
   const result = await cash.findByIdAndRemove(id);
+  const {amount, wallet, type} = result;
+  await updateWalletTotal(wallet.toLowerCase(), amount, type);
   return result;
 };
 

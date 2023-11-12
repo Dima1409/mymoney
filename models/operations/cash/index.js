@@ -6,7 +6,7 @@ const joiCashAddSchema = Joi.object({
   type: Joi.boolean().required(),
   wallet: Joi.string().required(),
   category: Joi.string().required(),
-  comment: Joi.string().empty("").min(2).max(20),
+  comment: Joi.string().empty("").max(22),
 });
 
 const joiCashSellSchema = Joi.object({
@@ -14,7 +14,7 @@ const joiCashSellSchema = Joi.object({
   type: Joi.boolean().required(),
   wallet: Joi.string().required(),
   category: Joi.string().required(),
-  comment: Joi.string().empty("").min(2).max(20),
+  comment: Joi.string().empty("").max(22),
 });
 
 // const joiCashTransferSchema = Joi.object({

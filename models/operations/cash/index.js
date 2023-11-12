@@ -50,7 +50,6 @@ const cashSchema = new Schema(
     },
     comment: {
       type: String,
-      minLength: 2,
       maxLength: 22,
     },
   },

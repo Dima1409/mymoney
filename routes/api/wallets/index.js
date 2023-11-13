@@ -5,7 +5,7 @@ const { wallets } = require("../../../controllers");
 // const { cashWallet } = require("../../../models");
 
 routerWallets.get("/", wallets.getAllTotal);
-routerWallets.patch("/",  wallets.updateTotal);
+routerWallets.post("/new",  wallets.createNew);
 
 // routerWallets.patch("/", validation(wallets.updateTotalValueCashSchema), ctrlWrapper(wallets.updateTotalValueCash));
 

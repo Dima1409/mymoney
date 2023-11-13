@@ -6,7 +6,9 @@ const getAllWallets = async () => {
 };
 const updateWalletTotal = async (wallet, amount, type) => {
   try {
-    const existingWallet = await WalletSchema.find({ name: { $regex: new RegExp('^' + wallet, 'i') } });
+    const existingWallet = await WalletSchema.find({
+      name: { $regex: new RegExp("^" + wallet, "i") },
+    });
     if (!existingWallet) {
       throw new Error("Wallet not found");
     }
@@ -15,7 +17,7 @@ const updateWalletTotal = async (wallet, amount, type) => {
         ? { $inc: { total: amount } }
         : { $inc: { total: -amount } };
     const updatedWallet = await WalletSchema.findOneAndUpdate(
-      { name: { $regex: new RegExp('^' + wallet, 'i') } },
+      { name: { $regex: new RegExp("^" + wallet, "i") } },
       updateQuery,
       { new: true }
     );
@@ -28,7 +30,22 @@ const updateWalletTotal = async (wallet, amount, type) => {
   }
 };
 
+const createNewWallet = async (wallet) => {
+  const existingWallet = await WalletSchema.findOne({ name: wallet });
+  if (existingWallet) {
+    console.log(`Wallet '${wallet}' already exists.`);
+    return existingWallet;
+  }
+  const newWallet = await WalletSchema.create({
+    name: wallet,
+    total: 0,
+  });
+
+  console.log(`Wallet '${wallet}' created successfully.`);
+  return newWallet;
+};
 module.exports = {
   getAllWallets,
   updateWalletTotal,
+  createNewWallet,
 };

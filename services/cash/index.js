@@ -1,5 +1,5 @@
 const { operationsModels } = require("../../models");
-const { updateWalletTotal } = require("../wallets");
+const { updateWalletTotal, updateWalletDeleted } = require("../wallets");
 const cash = operationsModels.Cash;
 
 const getAllCash = async () => {
@@ -10,7 +10,7 @@ const getAllCash = async () => {
 const addCash = async (body) => {
   try {
     const { wallet, amount } = body;
-    await updateWalletTotal(wallet.toLowerCase(), amount, "add");
+    await updateWalletTotal(wallet.toLowerCase(), amount, true);
     const newAdd = await cash.create({ ...body });
     return newAdd;
   } catch (error) {
@@ -21,7 +21,7 @@ const addCash = async (body) => {
 const sellCash = async (body) => {
   try {
     const { wallet, amount } = body;
-    await updateWalletTotal(wallet.toLowerCase(), amount, "sell");
+    await updateWalletTotal(wallet.toLowerCase(), amount, false);
     const newSell = await cash.create({ ...body });
     return newSell;
   } catch (error) {
@@ -31,8 +31,8 @@ const sellCash = async (body) => {
 
 const deleteOperation = async (id) => {
   const result = await cash.findByIdAndRemove(id);
-  const {amount, wallet, type} = result;
-  await updateWalletTotal(wallet.toLowerCase(), amount, type);
+  const { amount, wallet, type } = result;
+  await updateWalletDeleted(wallet.toLowerCase(), amount, type);
   return result;
 };
 

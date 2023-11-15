@@ -12,8 +12,8 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/wallets/operation", routerCash);
-app.use("/api/wallets/total", routerWallets);
+app.use("/api/operation", routerCash);
+app.use("/api/wallets", routerWallets);
 app.use("/api/categories", routerCategories);
 
 app.use((req, res) => {

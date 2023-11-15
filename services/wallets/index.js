@@ -13,9 +13,37 @@ const updateWalletTotal = async (wallet, amount, type) => {
       throw new Error("Wallet not found");
     }
     const updateQuery =
-      type === "add"
+      type
         ? { $inc: { total: amount } }
         : { $inc: { total: -amount } };
+        console.log(updateQuery)
+    const updatedWallet = await WalletSchema.findOneAndUpdate(
+      { name: { $regex: new RegExp("^" + wallet, "i") } },
+      updateQuery,
+      { new: true }
+    );
+    if (!updatedWallet) {
+      throw new Error("Wallet not found");
+    }
+    return updatedWallet;
+  } catch (error) {
+    throw new Error(`Error updating wallet total: ${error.message}`);
+  }
+};
+
+const updateWalletDeleted = async (wallet, amount, type) => {
+  try {
+    const existingWallet = await WalletSchema.find({
+      name: { $regex: new RegExp("^" + wallet, "i") },
+    });
+    if (!existingWallet) {
+      throw new Error("Wallet not found");
+    }
+    const updateQuery =
+      type
+        ? { $inc: { total: -amount } }
+        : { $inc: { total: +amount } };
+        console.log(updateQuery)
     const updatedWallet = await WalletSchema.findOneAndUpdate(
       { name: { $regex: new RegExp("^" + wallet, "i") } },
       updateQuery,
@@ -48,4 +76,5 @@ module.exports = {
   getAllWallets,
   updateWalletTotal,
   createNewWallet,
+  updateWalletDeleted
 };

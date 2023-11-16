@@ -12,11 +12,10 @@ const updateWalletTotal = async (wallet, amount, type) => {
     if (!existingWallet) {
       throw new Error("Wallet not found");
     }
-    const updateQuery =
-      type
-        ? { $inc: { total: amount } }
-        : { $inc: { total: -amount } };
-        console.log(updateQuery)
+    const updateQuery = type
+      ? { $inc: { total: amount } }
+      : { $inc: { total: -amount } };
+    console.log(updateQuery);
     const updatedWallet = await WalletSchema.findOneAndUpdate(
       { name: { $regex: new RegExp("^" + wallet, "i") } },
       updateQuery,
@@ -39,11 +38,10 @@ const updateWalletDeleted = async (wallet, amount, type) => {
     if (!existingWallet) {
       throw new Error("Wallet not found");
     }
-    const updateQuery =
-      type
-        ? { $inc: { total: -amount } }
-        : { $inc: { total: +amount } };
-        console.log(updateQuery)
+    const updateQuery = type
+      ? { $inc: { total: -amount } }
+      : { $inc: { total: +amount } };
+    console.log(updateQuery);
     const updatedWallet = await WalletSchema.findOneAndUpdate(
       { name: { $regex: new RegExp("^" + wallet, "i") } },
       updateQuery,
@@ -72,9 +70,35 @@ const createNewWallet = async (wallet) => {
   console.log(`Wallet '${wallet}' created successfully.`);
   return newWallet;
 };
+
+const deleteWallet = async (id) => {
+  const wallet = await WalletSchema.findByIdAndRemove(id);
+  if (wallet) {
+    console.log(`Wallet with id: ${id} not found`);
+  }
+  console.log(`Wallet with id: ${id} deleted`);
+  return wallet;
+};
+
+const renameWallet = async (id, newName) => {
+  try {
+    const updatedWallet = await WalletSchema.findByIdAndUpdate(
+      id,
+      { $set: { name: newName } },
+      { new: true }
+    );
+    console.log(updatedWallet);
+    return updatedWallet;
+  } catch (error) {
+    throw new Error(`Error renaming wallet: ${error.message}`);
+  }
+};
+
 module.exports = {
   getAllWallets,
   updateWalletTotal,
   createNewWallet,
-  updateWalletDeleted
+  deleteWallet,
+  updateWalletDeleted,
+  renameWallet,
 };

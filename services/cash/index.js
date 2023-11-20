@@ -9,8 +9,8 @@ const getAllCash = async () => {
 
 const addCash = async (body) => {
   try {
-    const { wallet, amount } = body;
-    await updateWalletTotal(wallet.toLowerCase(), amount, true);
+    const { wallet, amount, type } = body;
+    await updateWalletTotal(wallet.toLowerCase(), amount, type);
     const newAdd = await cash.create({ ...body });
     return newAdd;
   } catch (error) {
@@ -20,8 +20,8 @@ const addCash = async (body) => {
 
 const sellCash = async (body) => {
   try {
-    const { wallet, amount } = body;
-    await updateWalletTotal(wallet.toLowerCase(), amount, false);
+    const { wallet, amount, type } = body;
+    await updateWalletTotal(wallet.toLowerCase(), amount, type);
     const newSell = await cash.create({ ...body });
     return newSell;
   } catch (error) {

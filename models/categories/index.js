@@ -1,18 +1,8 @@
 const { model, Schema } = require("mongoose");
 
 const categoriesSchema = new Schema({
-  add: [
-    {
-      _id: String,
-      name: String,
-    },
-  ],
-  sell: [
-    {
-      _id: String,
-      name: String,
-    },
-  ],
+  name: { type: String, required: true },
+  type: { type: String, required: true },
 });
 
 const CategoriesSchema = model("category", categoriesSchema);

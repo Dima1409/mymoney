@@ -2,7 +2,12 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 
-const { routerCash, routerWallets, routerCategories } = require("./routes/api");
+const {
+  authRouter,
+  routerCash,
+  routerWallets,
+  routerCategories,
+} = require("./routes/api");
 
 const app = express();
 
@@ -12,6 +17,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/auth", authRouter);
 app.use("/api/operation", routerCash);
 app.use("/api/wallets", routerWallets);
 app.use("/api/categories", routerCategories);

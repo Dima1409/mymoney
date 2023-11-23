@@ -18,6 +18,24 @@ const createNewUser = async (req, res, next) => {
   }
 };
 
+const loginUser = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await services.login(email, password);
+    res.status(200).json({
+      status: "success",
+      message: "User success login",
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 module.exports = {
   createNewUser,
+  loginUser,
 };

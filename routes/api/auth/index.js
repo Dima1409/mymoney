@@ -9,7 +9,11 @@ authRouter.post(
   validation(schemas.joiRegisterSchema),
   ctrlWrapper(user.createNewUser)
 );
-
+authRouter.post(
+  "/login",
+  validation(schemas.joiLoginSchema),
+  ctrlWrapper(user.loginUser)
+);
 module.exports = {
   authRouter,
 };

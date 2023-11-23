@@ -1,17 +1,17 @@
 const { UserSchema } = require("../../models");
+const { HttpError } = require("../../middlewares");
 
 const register = async (name, email, password) => {
-  // const newUser = await UserSchema.findOne({ email: email });
-  // if (newUser) {
-  //   console.log(`User with email: ${email} already exists`);
-  //   return newUser;
-  // }
-  const result = await UserSchema.create({
+  const user = await UserSchema.findOne({ email });
+  if (user) {
+    throw HttpError(409, `Email "${email}" already in use`);
+  }
+  const newUser = await UserSchema.create({
     name,
     email,
     password,
   });
-  return result;
+  return newUser;
 };
 
 module.exports = {

@@ -30,6 +30,7 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Field is required"],
       match: emailRegex,
+      unique: true,
     },
     password: {
       type: String,

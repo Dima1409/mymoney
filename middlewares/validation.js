@@ -1,18 +1,14 @@
-const createError = require("http-errors");
+const { HttpError } = require("./httpError");
 
 const validation = (schema) => {
-  return (req, res, next) => {
-    if (Object.keys(req.body).length === 0) {
-      return next(createError(411, "Fields cannot be empty"));
-    }
-    console.log(req.body);
+  const func = (req, res, next) => {
     const { error } = schema.validate(req.body);
     if (error) {
-      error.status = 400;
-      next(error);
+      next(HttpError(400, error.message));
     }
     next();
   };
+  return func;
 };
 
 module.exports = { validation };

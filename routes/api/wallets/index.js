@@ -1,13 +1,26 @@
 const express = require("express");
 const routerWallets = express.Router();
 const { wallets } = require("../../../controllers");
-const { ctrlWrapper } = require("../../../middlewares");
-// const { cashWallet } = require("../../../models");
+const {
+  ctrlWrapper,
+  validation,
+  isValidId,
+  isAuth,
+} = require("../../../middlewares");
+const { joiAddWalletSchema } = require("../../../models");
 
-routerWallets.get("/", ctrlWrapper(wallets.getAllTotal));
-routerWallets.post("/new", ctrlWrapper(wallets.createNew));
-routerWallets.delete("/:id", ctrlWrapper(wallets.deleteW));
-routerWallets.patch("/:id", ctrlWrapper(wallets.renameW));
+routerWallets.get("/", isAuth, ctrlWrapper(wallets.getAllTotal));
+routerWallets.post(
+  "/new",
+  validation(joiAddWalletSchema),
+  ctrlWrapper(wallets.createNew)
+);
+routerWallets.delete("/:id", isValidId, ctrlWrapper(wallets.deleteW));
+routerWallets.patch(
+  "/:id",
+  validation(joiAddWalletSchema),
+  ctrlWrapper(wallets.renameW)
+);
 
 // routerWallets.patch("/", validation(wallets.updateTotalValueCashSchema), ctrlWrapper(wallets.updateTotalValueCash));
 

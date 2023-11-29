@@ -1,11 +1,13 @@
 const { operationsModels } = require("./operations");
-const { CategoriesSchema } = require("./categories");
-const { WalletSchema } = require("./wallets");
+const { CategoriesSchema, joiAddCategorySchema } = require("./categories");
+const { WalletSchema, joiAddWalletSchema } = require("./wallets");
 const { UserSchema } = require("./user");
 
 module.exports = {
   operationsModels,
   WalletSchema,
+  joiAddWalletSchema,
   CategoriesSchema,
+  joiAddCategorySchema,
   UserSchema,
 };

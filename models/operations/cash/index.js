@@ -1,35 +1,13 @@
 const { model, Schema } = require("mongoose");
 const Joi = require("joi");
 
-const joiCashAddSchema = Joi.object({
+const joiOperationAddSchema = Joi.object({
   amount: Joi.number().required(),
   type: Joi.string().required(),
   wallet: Joi.string().required(),
   category: Joi.string().required(),
   comment: Joi.string().empty("").max(22),
 });
-
-const joiCashSellSchema = Joi.object({
-  amount: Joi.number().required(),
-  type: Joi.string().required(),
-  wallet: Joi.string().required(),
-  category: Joi.string().required(),
-  comment: Joi.string().empty("").max(22),
-});
-
-// const joiCashTransferSchema = Joi.object({
-//   transfer: Joi.number().required(),
-//   from: Joi.string().required(),
-//   to: Joi.string().required(),
-// });
-
-// const joiCashUpdateSchema = Joi.object({
-//   add: Joi.number(),
-//   sell: Joi.number(),
-//   wallet: Joi.string().required(),
-//   category: Joi.string().required(),
-//   comment: Joi.string().empty("").min(2).max(20),
-// });
 
 const cashSchema = new Schema(
   {
@@ -60,6 +38,5 @@ const Cash = model("operation", cashSchema);
 
 module.exports = {
   Cash,
-  joiCashAddSchema,
-  joiCashSellSchema,
+  joiOperationAddSchema,
 };

@@ -7,7 +7,7 @@ const authRouter = express.Router();
 authRouter.post(
   "/register",
   validation(schemas.joiRegisterSchema),
-  ctrlWrapper(user.createNewUser)
+  ctrlWrapper(user.registerUser)
 );
 authRouter.post(
   "/login",

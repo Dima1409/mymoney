@@ -1,20 +1,27 @@
 const express = require("express");
 const routerCash = express.Router();
 const { cash } = require("../../../controllers");
-const { validation, ctrlWrapper, isValidId } = require("../../../middlewares");
-const { operationsModels } = require("../../../models");
+const {
+  validation,
+  ctrlWrapper,
+  isValidId,
+  isAuth,
+} = require("../../../middlewares");
+const { joiOperationAddSchema } = require("../../../models");
 
-routerCash.get("/", cash.getCash);
+routerCash.get("/", isAuth, cash.getCash);
 
 routerCash.post(
   "/add",
-  validation(operationsModels.joiOperationAddSchema),
+  isAuth,
+  validation(joiOperationAddSchema),
   ctrlWrapper(cash.addCash)
 );
 
 routerCash.post(
   "/sell",
-  validation(operationsModels.joiOperationAddSchema),
+  isAuth,
+  validation(joiOperationAddSchema),
   ctrlWrapper(cash.sellCash)
 );
 

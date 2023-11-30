@@ -1,8 +1,9 @@
 const service = require("../../services/wallets");
 
 const getAllTotal = async (req, res, next) => {
+  const { _id: owner } = req.user;
   try {
-    const result = await service.getAllWallets();
+    const result = await service.getAllWallets(owner);
     res.json({
       status: "success",
       code: 200,

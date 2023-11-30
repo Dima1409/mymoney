@@ -8,17 +8,18 @@ const isAuth = async (req, res, next) => {
   console.log(authorization);
   const [bearer, token] = authorization.split(" ");
   if (bearer !== "Bearer") {
-    next(HttpError(401, "Not authorized"));
+    next(HttpError(401));
   }
   try {
     const { id } = jwt.verify(token, SECRET_KEY);
     const user = await UserSchema.findById(id);
     if (!user) {
-      next(HttpError(401, "Not authorized"));
+      next(HttpError(401));
     }
+    req.user = user;
     next();
   } catch {
-    next(HttpError(401, "Not authorized"));
+    next(HttpError(401));
   }
 };
 

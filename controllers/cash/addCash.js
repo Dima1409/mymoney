@@ -1,7 +1,8 @@
 const service = require("../../services/cash");
 
 const addCash = async (req, res, next) => {
-  const addNew = await service.addCash({ ...req.body });
+  const { _id } = req.user;
+  const addNew = await service.addCash({ ...req.body, owner: _id });
   res.status(201).json({
     status: "success",
     message: "Cash added",

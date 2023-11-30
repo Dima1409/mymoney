@@ -7,8 +7,9 @@ const joiAddCategorySchema = Joi.object({
 });
 
 const categoriesSchema = new Schema({
-  name: { type: String, required: true, maxLength: 14 },
+  name: { type: [String], required: true, maxLength: 14, default: ["Salary", "Work", "Business"] },
   type: { type: String, required: true, maxLength: 14 },
+  owner: {type: Schema.Types.ObjectId, ref: "user", required: true}
 });
 
 const CategoriesSchema = model("category", categoriesSchema);

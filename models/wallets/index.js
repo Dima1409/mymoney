@@ -6,18 +6,22 @@ const joiAddWalletSchema = Joi.object({
   total: Joi.number().required().default(0),
 });
 
-const walletSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-    maxLength: 12,
+const walletSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      maxLength: 12,
+    },
+    total: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    owner: { type: Schema.Types.ObjectId, ref: "user", required: true },
   },
-  total: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
-});
+  { versionKey: false, timestamps: true }
+);
 
 const WalletSchema = model("wallet", walletSchema);
 

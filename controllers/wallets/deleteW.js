@@ -3,7 +3,8 @@ const { NotFound } = require("http-errors");
 
 const deleteW = async (req, res, next) => {
   const { id } = req.params;
-  const result = await service.deleteWallet(id);
+  const { _id: owner } = req.user;
+  const result = await service.deleteWallet(id, owner);
   if (!result) {
     return next(NotFound(`Wallet with id: ${id} not found`));
   }

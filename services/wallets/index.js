@@ -13,11 +13,48 @@ const getAllWallets = async (id) => {
   return result;
 };
 
-const updateWalletTotal = async (wallet, amount, type, id) => {
+const createNewWallet = async (wallet, ownerId) => {
+  const existingWallet = await WalletSchema.findOne({
+    name: wallet,
+    owner: ownerId,
+  });
+  if (existingWallet) {
+    throw new Error(`Wallet '${wallet}' already exists.`);
+  }
+  const newWallet = await WalletSchema.create({
+    name: wallet,
+    owner: ownerId,
+    total: 0,
+  });
+  return newWallet;
+};
+
+const deleteWallet = async (id, ownerId) => {
+  const wallet = await WalletSchema.findByIdAndRemove(id, { owner: ownerId });
+  if (!wallet) {
+    throw new Error(`Wallet with id: ${id} not found`);
+  }
+  return wallet;
+};
+
+const renameWallet = async (id, ownerId, newName) => {
+  try {
+    const updatedWallet = await WalletSchema.findByIdAndUpdate(
+      { _id: id, owner: ownerId },
+      { $set: { name: newName } },
+      { new: true }
+    );
+    return updatedWallet;
+  } catch (error) {
+    throw new Error(`Error renaming wallet: ${error.message}`);
+  }
+};
+
+const updateWalletTotal = async (id, amount, type, ownerId) => {
   try {
     const existingWallet = await WalletSchema.find({
-      name: { $regex: new RegExp("^" + wallet, "i") },
-      id,
+      _id: id,
+      owner: ownerId,
     });
     if (!existingWallet) {
       throw new Error("Wallet not found");
@@ -28,8 +65,7 @@ const updateWalletTotal = async (wallet, amount, type, id) => {
         : { $inc: { total: -amount } };
     };
     const updatedWallet = await WalletSchema.findOneAndUpdate(
-      { name: { $regex: new RegExp("^" + wallet, "i") } },
-      id,
+      { _id: id, owner: ownerId },
       updateQuery(),
       { new: true }
     );
@@ -42,11 +78,11 @@ const updateWalletTotal = async (wallet, amount, type, id) => {
   }
 };
 
-const updateWalletDeleted = async (wallet, amount, type, id) => {
+const updateWalletDeleted = async (id, amount, type, ownerId) => {
   try {
     const existingWallet = await WalletSchema.find({
-      name: { $regex: new RegExp("^" + wallet, "i") },
-      id,
+      _id: id,
+      owner: ownerId,
     });
     if (!existingWallet) {
       throw new Error("Wallet not found");
@@ -57,8 +93,7 @@ const updateWalletDeleted = async (wallet, amount, type, id) => {
         : { $inc: { total: +amount } };
     };
     const updatedWallet = await WalletSchema.findOneAndUpdate(
-      { name: { $regex: new RegExp("^" + wallet, "i") } },
-      id,
+      { _id: id, owner: ownerId },
       updateQuery(),
       { new: true }
     );
@@ -68,50 +103,6 @@ const updateWalletDeleted = async (wallet, amount, type, id) => {
     return updatedWallet;
   } catch (error) {
     throw new Error(`Error updating wallet total: ${error.message}`);
-  }
-};
-
-const createNewWallet = async (wallet, id, owner) => {
-  const existingWallet = await WalletSchema.findOne({
-    name: wallet,
-    _id: id,
-    owner,
-  });
-  if (existingWallet) {
-    console.log(`Wallet '${wallet}' already exists.`);
-    return existingWallet;
-  }
-  const newWallet = await WalletSchema.create({
-    name: wallet,
-    owner,
-    _id: id,
-    total: 0,
-  });
-
-  console.log(`Wallet '${wallet}' created successfully.`);
-  return newWallet;
-};
-
-const deleteWallet = async (id) => {
-  const wallet = await WalletSchema.findByIdAndRemove(id);
-  if (!wallet) {
-    console.log(`Wallet with id: ${id} not found`);
-  }
-  console.log(`Wallet with id: ${id} deleted`);
-  return wallet;
-};
-
-const renameWallet = async (id, newName) => {
-  try {
-    const updatedWallet = await WalletSchema.findByIdAndUpdate(
-      id,
-      { $set: { name: newName } },
-      { new: true }
-    );
-    console.log(updatedWallet);
-    return updatedWallet;
-  } catch (error) {
-    throw new Error(`Error renaming wallet: ${error.message}`);
   }
 };
 

@@ -4,7 +4,8 @@ const { NotFound } = require("http-errors");
 const renameW = async (req, res, next) => {
   const { id } = req.params;
   const { name } = req.body;
-  const result = await service.renameWallet(id, name);
+  const { _id: owner } = req.user;
+  const result = await service.renameWallet(id, owner, name);
   if (!result) {
     return next(NotFound(`Wallet not found`));
   }

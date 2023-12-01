@@ -1,10 +1,10 @@
-const { routerCash } = require("./cash");
+const { routerOperations } = require("./operations");
 const { routerWallets } = require("./wallets");
 const { routerCategories } = require("./categories");
 const { authRouter } = require("./auth");
 
 module.exports = {
-  routerCash,
+  routerOperations,
   routerWallets,
   routerCategories,
   authRouter,

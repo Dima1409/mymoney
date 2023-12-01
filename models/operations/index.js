@@ -9,7 +9,7 @@ const joiOperationAddSchema = Joi.object({
   comment: Joi.string().empty("").max(22),
 });
 
-const cashSchema = new Schema(
+const operationsSchema = new Schema(
   {
     amount: {
       type: Number,
@@ -35,9 +35,9 @@ const cashSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-const Cash = model("operation", cashSchema);
+const Operation = model("operation", operationsSchema);
 
 module.exports = {
-  Cash,
+  Operation,
   joiOperationAddSchema,
 };

@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const {
   authRouter,
-  routerCash,
+  routerOperations,
   routerWallets,
   routerCategories,
 } = require("./routes/api");
@@ -19,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
-app.use("/api/operation", routerCash);
+app.use("/api/operation", routerOperations);
 app.use("/api/wallets", routerWallets);
 app.use("/api/categories", routerCategories);
 

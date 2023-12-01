@@ -1,14 +1,14 @@
-const service = require("../../services/cash");
+const service = require("../../services/operations");
 
-const getCash = async (req, res, next) => {
+const getAll = async (req, res, next) => {
   const { _id: owner } = req.user;
   try {
-    const results = await service.getAllCash({ owner });
+    const result = await service.getAllOperations({ owner });
     res.json({
       status: "success",
       code: 200,
       data: {
-        results,
+        result,
       },
     });
   } catch (e) {
@@ -18,5 +18,5 @@ const getCash = async (req, res, next) => {
 };
 
 module.exports = {
-  getCash,
+  getAll,
 };

@@ -1,38 +1,32 @@
 const { Operation } = require("../../models");
-const { wallets } = require("../../controllers");
 
 const getAllOperations = async (id) => {
   const result = await Operation.find({ id });
   return result;
 };
 
-const addOperationIncome = async (body, owner) => {
+const addOperationIncome = async (body, id) => {
   try {
-    const { wallet, amount, type } = body;
-    await wallets.updateTotal();
-    const newAdd = await Operation.create({ ...body, owner });
-    console.log(newAdd);
-    return newAdd;
+    const newIncome = await Operation.create({ ...body, owner: id });
+    return newIncome;
   } catch (error) {
     throw new Error(`Error creating income operation: ${error.message}`);
   }
 };
 
-const addOperationExpense = async (body) => {
+const addOperationExpense = async (body, id) => {
   try {
-    const { wallet, amount, type } = body;
-    await updateWalletTotal(wallet.toLowerCase(), amount, type);
-    const newSell = await Operation.create({ ...body });
-    return newSell;
+    const newExpense = await Operation.create({ ...body, owner: id });
+    return newExpense;
   } catch (error) {
     throw new Error(`Error creating expense operation: ${error.message}`);
   }
 };
 
-const deleteOperation = async (id) => {
-  const result = await Operation.findByIdAndRemove(id);
-  const { amount, wallet, type } = result;
-  await updateWalletDeleted(wallet.toLowerCase(), amount, type);
+const deleteOperation = async (id, ownerId) => {
+  const result = await Operation.findByIdAndRemove({_id: id, owner: ownerId});
+  // const { amount, wallet, type } = result;
+  // await updateWalletDeleted(wallet.toLowerCase(), amount, type);
   return result;
 };
 

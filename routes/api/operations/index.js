@@ -1,6 +1,6 @@
 const express = require("express");
 const routerOperations = express.Router();
-const { operations } = require("../../../controllers");
+const { operations, wallets } = require("../../../controllers");
 const {
   validation,
   ctrlWrapper,
@@ -15,7 +15,7 @@ routerOperations.post(
   "/add",
   isAuth,
   validation(joiOperationAddSchema),
-  ctrlWrapper(operations.createOperationIncome)
+  ctrlWrapper(operations.createOperationIncome),
 );
 
 routerOperations.post(

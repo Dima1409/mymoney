@@ -50,10 +50,10 @@ const renameWallet = async (id, ownerId, newName) => {
   }
 };
 
-const updateWalletTotal = async (id, amount, type, ownerId) => {
+const updateWalletTotal = async (wallet, amount, type, ownerId) => {
   try {
-    const existingWallet = await WalletSchema.find({
-      _id: id,
+    const existingWallet = await WalletSchema.findOne({
+      name: wallet,
       owner: ownerId,
     });
     if (!existingWallet) {
@@ -65,7 +65,7 @@ const updateWalletTotal = async (id, amount, type, ownerId) => {
         : { $inc: { total: -amount } };
     };
     const updatedWallet = await WalletSchema.findOneAndUpdate(
-      { _id: id, owner: ownerId },
+      { _id: existingWallet._id, owner: ownerId },
       updateQuery(),
       { new: true }
     );
@@ -78,10 +78,10 @@ const updateWalletTotal = async (id, amount, type, ownerId) => {
   }
 };
 
-const updateWalletDeleted = async (id, amount, type, ownerId) => {
+const updateWalletDeleted = async (wallet, amount, type, ownerId) => {
   try {
-    const existingWallet = await WalletSchema.find({
-      _id: id,
+    const existingWallet = await WalletSchema.findOne({
+      name: wallet,
       owner: ownerId,
     });
     if (!existingWallet) {
@@ -93,7 +93,7 @@ const updateWalletDeleted = async (id, amount, type, ownerId) => {
         : { $inc: { total: +amount } };
     };
     const updatedWallet = await WalletSchema.findOneAndUpdate(
-      { _id: id, owner: ownerId },
+      { _id: existingWallet._id, owner: ownerId },
       updateQuery(),
       { new: true }
     );

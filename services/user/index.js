@@ -30,7 +30,7 @@ const login = async (email, password) => {
   const payload = {
     id: user._id,
   };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "2h" });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
   return token;
 };
 

@@ -4,7 +4,8 @@ const { NotFound } = require("http-errors");
 const renameCat = async (req, res, next) => {
   const { id } = req.params;
   const { name } = req.body;
-  const result = await services.renameCategory(id, name);
+  const { _id: ownerId } = req.user;
+  const result = await services.renameCategory(id, name, ownerId);
   if (!result) {
     return next(NotFound(`Category with id: ${id} not found`));
   }

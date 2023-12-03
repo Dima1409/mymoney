@@ -1,35 +1,51 @@
 const { CategoriesSchema } = require("../../models");
 
-const getAllCategories = async () => {
-  const result = await CategoriesSchema.find();
+const getAllCategories = async (id) => {
+  let result = await CategoriesSchema.find({ owner: id });
+  if (result.length === 0) {
+    const defaultWallets = [
+      { name: "Work", type: "income", owner: id },
+      { name: "Business", type: "income", owner: id },
+      { name: "Food", type: "expense", owner: id },
+      { name: "Health", type: "expense", owner: id },
+    ];
+    await CategoriesSchema.create(defaultWallets);
+  }
+  result = await CategoriesSchema.find({ owner: id });
   return result;
 };
 
-const createNewCategory = async (category, type) => {
-  const existingCategory = await CategoriesSchema.findOne({ name: category });
+const createNewCategory = async (category, type, ownerId) => {
+  const existingCategory = await CategoriesSchema.findOne({
+    name: category,
+    owner: ownerId,
+  });
   if (existingCategory) {
-    console.log(`Category with name: ${category} already exist`);
-    return existingCategory;
+    throw new Error(`Category with name: ${category} already exist`);
   }
   const newCategory = await CategoriesSchema.create({
     name: category,
     type: type,
+    owner: ownerId,
   });
   return newCategory;
 };
 
-const deleteCategory = async (id) => {
-  const result = await CategoriesSchema.findByIdAndDelete(id);
+const deleteCategory = async (id, ownerId) => {
+  const result = await CategoriesSchema.findByIdAndDelete({
+    _id: id,
+    owner: ownerId,
+  });
   if (!result) {
-    console.log(`Category with id:${id} not found`);
+    throw new Error(`Category with id:${id} not found`);
   }
   return result;
 };
 
-const renameCategory = async (id, newName) => {
+const renameCategory = async (id, newName, ownerId) => {
   try {
     const result = await CategoriesSchema.findByIdAndUpdate(
-      id,
+      { _id: id, owner: ownerId },
       { $set: { name: newName } },
       { new: true }
     );

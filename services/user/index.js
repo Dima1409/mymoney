@@ -31,10 +31,17 @@ const login = async (email, password) => {
     id: user._id,
   };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
+  await UserSchema.findByIdAndUpdate(user._id, { token });
   return token;
+};
+
+const logout = async (id) => {
+  const userLogout = await UserSchema.findByIdAndUpdate(id, { token: "" });
+  return userLogout;
 };
 
 module.exports = {
   register,
   login,
+  logout,
 };

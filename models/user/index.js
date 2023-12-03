@@ -37,6 +37,10 @@ const userSchema = new Schema(
       minLength: 6,
       required: [true, "Field is required"],
     },
+    token: {
+      type: String,
+      default: "",
+    },
   },
   { versionKey: false, timestamps: true }
 );

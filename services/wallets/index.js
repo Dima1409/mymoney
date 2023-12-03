@@ -1,7 +1,7 @@
 const { WalletSchema } = require("../../models");
 
 const getAllWallets = async (id) => {
-  let result = await WalletSchema.find({ owner: id });
+  let result = await WalletSchema.find({ owner: id }).populate("owner", "name email");
   if (result.length === 0) {
     const defaultWallets = [
       { name: "Cash", total: 0, owner: id },
@@ -9,7 +9,7 @@ const getAllWallets = async (id) => {
     ];
     await WalletSchema.create(defaultWallets);
   }
-  result = await WalletSchema.find({ owner: id });
+  result = await WalletSchema.find({ owner: id }).populate("owner", "name email");
   return result;
 };
 

@@ -55,9 +55,22 @@ const logoutUser = async (req, res, next) => {
   });
 };
 
+const updateAvatarUrl = async (req, res) => {
+  const { _id } = req.user;
+  const { path: tempUpload, originalname } = req.file;
+  const result = await services.updateAvatar(_id, tempUpload, originalname);
+  res.status(201).json({
+    message: "Avatar updated",
+    data: {
+      result,
+    },
+  });
+};
+
 module.exports = {
   registerUser,
   loginUser,
   getCurrent,
   logoutUser,
+  updateAvatarUrl,
 };

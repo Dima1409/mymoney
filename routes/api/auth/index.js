@@ -1,5 +1,10 @@
 const express = require("express");
-const { validation, ctrlWrapper, isAuth } = require("../../../middlewares");
+const {
+  validation,
+  ctrlWrapper,
+  isAuth,
+  upload,
+} = require("../../../middlewares");
 const { user } = require("../../../controllers");
 const { schemas } = require("../../../models/user");
 const authRouter = express.Router();
@@ -16,6 +21,12 @@ authRouter.post(
 );
 authRouter.get("/current", isAuth, ctrlWrapper(user.getCurrent));
 authRouter.post("/logout", isAuth, ctrlWrapper(user.logoutUser));
+authRouter.patch(
+  "/avatar",
+  isAuth,
+  upload.single("avatar"),
+  ctrlWrapper(user.updateAvatarUrl)
+);
 module.exports = {
   authRouter,
 };

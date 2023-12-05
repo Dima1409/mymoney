@@ -19,14 +19,21 @@ authRouter.post(
   validation(schemas.joiLoginSchema),
   ctrlWrapper(user.loginUser)
 );
-authRouter.get("/current", isAuth, ctrlWrapper(user.getCurrent));
 authRouter.post("/logout", isAuth, ctrlWrapper(user.logoutUser));
 authRouter.patch(
-  "/avatar",
+  "/update",
   isAuth,
-  upload.single("avatar"),
-  ctrlWrapper(user.updateAvatarUrl)
+  ctrlWrapper(user.updateUser)
 );
+authRouter.patch(
+  "/updateAvatar",
+  isAuth,
+  upload.single("avatarURL"),
+  ctrlWrapper(user.updateUserAvatar)
+);
+authRouter.get("/current", isAuth, ctrlWrapper(user.getCurrent));
+authRouter.get("/deleteAvatar", isAuth, ctrlWrapper(user.deleteAvatar));
+
 module.exports = {
   authRouter,
 };

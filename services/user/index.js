@@ -1,13 +1,9 @@
 const { UserSchema } = require("../../models");
+const cloudinary = require("cloudinary").v2;
 const { HttpError } = require("../../helpers");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = process.env;
-const gravatar = require("gravatar");
-const path = require("path");
-const fs = require("fs/promises");
-
-const avatarsDir = path.join(__dirname, "..", "..", "public", "avatars");
 
 const register = async (name, email, password) => {
   const user = await UserSchema.findOne({ email });
@@ -15,12 +11,11 @@ const register = async (name, email, password) => {
     throw HttpError(409, `Email "${email}" already in use`);
   }
   const hashPassword = await bcrypt.hash(password, 10);
-  const avatarURL = gravatar.url(email);
   const newUser = await UserSchema.create({
     name,
     email,
     password: hashPassword,
-    avatarURL,
+    avatarURL: "",
   });
   return newUser;
 };
@@ -47,17 +42,44 @@ const logout = async (id) => {
   return userLogout;
 };
 
-const updateAvatar = async (userId, tempUpload, originalname) => {
-  const filename = `${userId}_${originalname}`;
-  const resultUpload = path.join(avatarsDir, filename);
-  await fs.rename(tempUpload, resultUpload);
-  const avatarURL = path.join("avatars", filename);
-  await UserSchema.findByIdAndUpdate(userId, { avatarURL });
-  return avatarURL;
+const updateUserById = async (id, { name, email }) => {
+  const result = UserSchema.findByIdAndUpdate(
+    id,
+    {
+      name,
+      email,
+    },
+    { new: true }
+  );
+  return result;
 };
+
+
+const updateUserAvatar = async (id, { avatarURL, imgId }) => {
+  const result = UserSchema.findByIdAndUpdate(
+    id,
+    {
+      avatarURL,
+      imgId,
+    },
+    { new: true }
+  );
+  return result;
+};
+
+const deleteImage = async (imgId) => {
+  const result = await cloudinary.api.delete_resources([imgId], {
+    type: "upload",
+    resource_type: "image",
+  });
+  return result;
+};
+
 module.exports = {
   register,
   login,
   logout,
-  updateAvatar,
+  updateUserById,
+  updateUserAvatar,
+  deleteImage,
 };

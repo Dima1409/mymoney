@@ -1,4 +1,5 @@
 const services = require("../../services/user");
+const { HttpError } = require("../../helpers");
 
 const registerUser = async (req, res, next) => {
   try {
@@ -36,13 +37,15 @@ const loginUser = async (req, res, next) => {
 };
 
 const getCurrent = async (req, res, next) => {
-  const { name, email } = req.user;
+  const { name, email, avatarURL } = req.user;
+
   res.status(200).json({
     status: "success",
     message: "Current User",
     data: {
       name,
       email,
+      avatarURL,
     },
   });
 };
@@ -55,14 +58,68 @@ const logoutUser = async (req, res, next) => {
   });
 };
 
-const updateAvatarUrl = async (req, res) => {
+const updateUser = async (req, res, next) => {
   const { _id } = req.user;
-  const { path: tempUpload, originalname } = req.file;
-  const result = await services.updateAvatar(_id, tempUpload, originalname);
+  const { name, email } = req.body;
+
+  const result = await services.updateUserById(
+    _id,
+    {
+      name,
+      email,
+    },
+    { new: true }
+  );
   res.status(201).json({
-    message: "Avatar updated",
+    status: "success",
     data: {
-      result,
+      name: result.name,
+      email: result.email,
+    },
+  });
+};
+
+const updateUserAvatar = async (req, res, next) => {
+  const { _id } = req.user;
+  const avatarURL = req.file ? req.file.path : req.user.avatarURL;
+  const imgId = req.file ? req.file.filename : req.user.imgId;
+  const result = await services.updateUserAvatar(
+    _id,
+    {
+      avatarURL,
+      imgId,
+    },
+    { new: true }
+  );
+  res.status(201).json({
+    status: "success",
+    message: "avatar edited successfully",
+    data: {
+      avatarURL: result.avatarURL,
+      imgId: result.imgId,
+    },
+  });
+};
+
+const deleteAvatar = async (req, res, next) => {
+  const { imgId, _id } = req.user;
+  if (!imgId) {
+    next(HttpError(400, "Image is missing"));
+  }
+  const { deleted } = await services.deleteImage(imgId);
+
+  if (deleted[imgId] === "not_found") {
+    next(HttpError(409, "Image not fount, failed deleting"));
+  }
+  const updatedUser = await services.updateUserAvatar(_id, {
+    avatarURL: "",
+    imgId: null,
+  });
+  res.status(200).json({
+    status: "success",
+    data: {
+      avatarURL: updatedUser.avatarURL,
+      imgId: updatedUser.imgId,
     },
   });
 };
@@ -72,5 +129,7 @@ module.exports = {
   loginUser,
   getCurrent,
   logoutUser,
-  updateAvatarUrl,
+  updateUser,
+  updateUserAvatar,
+  deleteAvatar,
 };

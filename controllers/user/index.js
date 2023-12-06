@@ -83,6 +83,9 @@ const updateUserAvatar = async (req, res, next) => {
   const { _id } = req.user;
   const avatarURL = req.file ? req.file.path : req.user.avatarURL;
   const imgId = req.file ? req.file.filename : req.user.imgId;
+  if (req.user.imgId) {
+    await services.deleteImage(req.user.imgId);
+  }
   const result = await services.updateUserAvatar(
     _id,
     {

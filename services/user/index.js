@@ -54,7 +54,6 @@ const updateUserById = async (id, { name, email }) => {
   return result;
 };
 
-
 const updateUserAvatar = async (id, { avatarURL, imgId }) => {
   const result = UserSchema.findByIdAndUpdate(
     id,
@@ -75,6 +74,18 @@ const deleteImage = async (imgId) => {
   return result;
 };
 
+const refreshUser = async (userId) => {
+  try {
+    const refreshedUser = await UserSchema.findById(userId);
+    if (!refreshedUser) {
+      throw HttpError(401, "User not found");
+    }
+    return refreshUser;
+  } catch (error) {
+    throw HttpError(500, "Internal server error");
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -82,4 +93,5 @@ module.exports = {
   updateUserById,
   updateUserAvatar,
   deleteImage,
+  refreshUser,
 };

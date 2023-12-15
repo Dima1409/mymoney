@@ -19,12 +19,8 @@ authRouter.post(
   validation(schemas.joiLoginSchema),
   ctrlWrapper(user.loginUser)
 );
-authRouter.post("/logout", isAuth, ctrlWrapper(user.logoutUser));
-authRouter.patch(
-  "/update",
-  isAuth,
-  ctrlWrapper(user.updateUser)
-);
+authRouter.get("/logout", isAuth, ctrlWrapper(user.logoutUser));
+authRouter.patch("/update", isAuth, ctrlWrapper(user.updateUser));
 authRouter.patch(
   "/updateAvatar",
   isAuth,
@@ -33,6 +29,7 @@ authRouter.patch(
 );
 authRouter.get("/current", isAuth, ctrlWrapper(user.getCurrent));
 authRouter.get("/deleteAvatar", isAuth, ctrlWrapper(user.deleteAvatar));
+authRouter.get("/refresh", isAuth, ctrlWrapper(user.refresh));
 
 module.exports = {
   authRouter,

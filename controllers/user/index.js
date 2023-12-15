@@ -127,6 +127,25 @@ const deleteAvatar = async (req, res, next) => {
   });
 };
 
+const refresh = async (req, res, next) => {
+  try {
+    const { _id } = req.user;
+    const refreshedUser = await services.refreshUser(_id);
+    res.status(200).json({
+      status: "success",
+      message: "User data refreshed",
+      data: {
+        name: refreshedUser.name,
+        email: refreshedUser.email,
+        avatarURL: refreshedUser.avatarURL,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
@@ -135,4 +154,5 @@ module.exports = {
   updateUser,
   updateUserAvatar,
   deleteAvatar,
+  refresh,
 };

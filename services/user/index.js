@@ -33,8 +33,8 @@ const login = async (email, password) => {
     id: user._id,
   };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
-  await UserSchema.findByIdAndUpdate(user._id, { token });
-  return token;
+  const updatedUser = await UserSchema.findByIdAndUpdate(user._id, { token });
+  return updatedUser;
 };
 
 const logout = async (id) => {

@@ -131,6 +131,7 @@ const refresh = async (req, res, next) => {
   try {
     const { _id } = req.user;
     const refreshedUser = await services.refreshUser(_id);
+    console.log(refreshedUser);
     res.status(200).json({
       status: "success",
       message: "User data refreshed",

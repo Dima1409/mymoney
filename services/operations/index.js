@@ -1,7 +1,8 @@
 const { Operation } = require("../../models");
 
 const getAllOperations = async (id) => {
-  const result = await Operation.find({ id });
+  const result = await Operation.find({ owner: id });
+  console.log("Services result operations", result);
   return result;
 };
 
@@ -24,7 +25,7 @@ const addOperationExpense = async (body, id) => {
 };
 
 const deleteOperation = async (id, ownerId) => {
-  const result = await Operation.findByIdAndRemove({_id: id, owner: ownerId});
+  const result = await Operation.findByIdAndRemove({ _id: id, owner: ownerId });
   // const { amount, wallet, type } = result;
   // await updateWalletDeleted(wallet.toLowerCase(), amount, type);
   return result;

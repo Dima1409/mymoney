@@ -1,6 +1,6 @@
 const express = require("express");
 const routerOperations = express.Router();
-const { operations, wallets } = require("../../../controllers");
+const { operations } = require("../../../controllers");
 const {
   validation,
   ctrlWrapper,

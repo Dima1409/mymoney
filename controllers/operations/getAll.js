@@ -1,10 +1,9 @@
-// const service = require("../../services/operations");
-const { Operation } = require("../../models");
+const service = require("../../services/operations");
 
 const getAll = async (req, res, next) => {
   const { _id: owner } = req.user;
   try {
-    const result = await Operation.find({ owner });
+    const result = await service.getAllOperations(owner);
     res.json({
       status: "success",
       code: 200,
@@ -12,6 +11,7 @@ const getAll = async (req, res, next) => {
         result,
       },
     });
+    console.log(result);
   } catch (e) {
     console.error(e);
     next(e);

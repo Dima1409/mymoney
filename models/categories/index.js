@@ -3,7 +3,7 @@ const Joi = require("joi");
 
 const joiAddCategorySchema = Joi.object({
   name: Joi.string().required().max(14),
-  type: Joi.string().required().max(14),
+  type: Joi.string().max(14),
 });
 
 const categoriesSchema = new Schema({
@@ -14,7 +14,6 @@ const categoriesSchema = new Schema({
   },
   type: {
     type: String,
-    required: true,
     maxLength: 14,
   },
   owner: { type: Schema.Types.ObjectId, ref: "category", required: true },

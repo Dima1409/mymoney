@@ -3,7 +3,7 @@ const Joi = require("joi");
 
 const joiAddWalletSchema = Joi.object({
   name: Joi.string().required().max(12),
-  total: Joi.number().required().default(0),
+  total: Joi.number().default(0),
 });
 
 const walletSchema = new Schema(
@@ -15,7 +15,6 @@ const walletSchema = new Schema(
     },
     total: {
       type: Number,
-      required: true,
       default: 0,
     },
     owner: { type: Schema.Types.ObjectId, ref: "user", required: true },

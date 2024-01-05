@@ -23,6 +23,7 @@ const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await services.login(email, password);
+    console.log("LOGIN", user);
     res.status(200).json({
       status: "success",
       message: "User success login",

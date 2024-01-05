@@ -1,7 +1,10 @@
-const { WalletSchema } = require("../../models");
+const { WalletSchema, Operation } = require("../../models");
 
 const getAllWallets = async (id) => {
-  let result = await WalletSchema.find({ owner: id }).populate("owner", "name email");
+  let result = await WalletSchema.find({ owner: id }).populate(
+    "owner",
+    "name email"
+  );
   if (result.length === 0) {
     const defaultWallets = [
       { name: "Cash", total: 0, owner: id },
@@ -9,7 +12,10 @@ const getAllWallets = async (id) => {
     ];
     await WalletSchema.create(defaultWallets);
   }
-  result = await WalletSchema.find({ owner: id }).populate("owner", "name email");
+  result = await WalletSchema.find({ owner: id }).populate(
+    "owner",
+    "name email"
+  );
   return result;
 };
 
@@ -31,6 +37,7 @@ const createNewWallet = async (wallet, ownerId) => {
 
 const deleteWallet = async (id, ownerId) => {
   const wallet = await WalletSchema.findByIdAndRemove(id, { owner: ownerId });
+  await Operation.deleteMany({ owner: ownerId });
   if (!wallet) {
     throw new Error(`Wallet with id: ${id} not found`);
   }
@@ -39,10 +46,21 @@ const deleteWallet = async (id, ownerId) => {
 
 const renameWallet = async (id, ownerId, newName) => {
   try {
+    const existingWallet = await WalletSchema.findOne({
+      _id: id,
+      owner: ownerId,
+    });
+    if (!existingWallet) {
+      throw new Error("Wallet not found");
+    }
     const updatedWallet = await WalletSchema.findByIdAndUpdate(
       { _id: id, owner: ownerId },
       { $set: { name: newName } },
       { new: true }
+    );
+    await Operation.updateMany(
+      { wallet: existingWallet.name, owner: ownerId },
+      { $set: { wallet: newName } }
     );
     return updatedWallet;
   } catch (error) {

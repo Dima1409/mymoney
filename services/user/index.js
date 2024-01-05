@@ -32,9 +32,11 @@ const login = async (email, password) => {
   const payload = {
     id: user._id,
   };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
-  const updatedUser = await UserSchema.findByIdAndUpdate(user._id, { token });
-  return updatedUser;
+  const userToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
+  const loginUser = await UserSchema.findByIdAndUpdate(user._id, {
+    token: userToken,
+  });
+  return loginUser;
 };
 
 const logout = async (id) => {
@@ -80,7 +82,7 @@ const refreshUser = async (userId) => {
     if (!refreshedUser) {
       throw HttpError(401, "User not found");
     }
-    return refreshUser;
+    return refreshedUser;
   } catch (error) {
     throw HttpError(500, "Internal server error");
   }

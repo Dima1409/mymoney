@@ -1,4 +1,4 @@
-const { CategoriesSchema } = require("../../models");
+const { CategoriesSchema, Operation } = require("../../models");
 
 const getAllCategories = async (id) => {
   let result = await CategoriesSchema.find({ owner: id });
@@ -44,10 +44,21 @@ const deleteCategory = async (id, ownerId) => {
 
 const renameCategory = async (id, newName, ownerId) => {
   try {
+    const existingCategory = await CategoriesSchema.findOne({
+      _id: id,
+      owner: ownerId,
+    });
+    if (!existingCategory) {
+      throw new Error("Category not found");
+    }
     const result = await CategoriesSchema.findByIdAndUpdate(
       { _id: id, owner: ownerId },
       { $set: { name: newName } },
       { new: true }
+    );
+    await Operation.updateMany(
+      { category: existingCategory.name, owner: ownerId },
+      { $set: { category: newName } }
     );
     return result;
   } catch (error) {

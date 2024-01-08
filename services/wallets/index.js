@@ -37,7 +37,7 @@ const createNewWallet = async (wallet, ownerId) => {
 
 const deleteWallet = async (id, ownerId) => {
   const wallet = await WalletSchema.findByIdAndRemove(id, { owner: ownerId });
-  await Operation.deleteMany({ owner: ownerId });
+  // await Operation.deleteMany({ owner: ownerId });
   if (!wallet) {
     throw new Error(`Wallet with id: ${id} not found`);
   }

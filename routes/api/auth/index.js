@@ -29,7 +29,6 @@ authRouter.patch(
 );
 authRouter.get("/current", isAuth, ctrlWrapper(user.getCurrent));
 authRouter.get("/deleteAvatar", isAuth, ctrlWrapper(user.deleteAvatar));
-authRouter.get("/refresh", isAuth, ctrlWrapper(user.refresh));
 
 module.exports = {
   authRouter,

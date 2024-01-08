@@ -38,7 +38,7 @@ const loginUser = async (req, res, next) => {
 };
 
 const getCurrent = async (req, res, next) => {
-  const { name, email, avatarURL } = req.user;
+  const { name, email, avatarURL, token } = req.user;
 
   res.status(200).json({
     status: "success",
@@ -47,6 +47,7 @@ const getCurrent = async (req, res, next) => {
       name,
       email,
       avatarURL,
+      token,
     },
   });
 };
@@ -128,26 +129,6 @@ const deleteAvatar = async (req, res, next) => {
   });
 };
 
-const refresh = async (req, res, next) => {
-  try {
-    const { _id } = req.user;
-    const refreshedUser = await services.refreshUser(_id);
-    console.log(refreshedUser);
-    res.status(200).json({
-      status: "success",
-      message: "User data refreshed",
-      data: {
-        name: refreshedUser.name,
-        email: refreshedUser.email,
-        avatarURL: refreshedUser.avatarURL,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-};
-
 module.exports = {
   registerUser,
   loginUser,
@@ -156,5 +137,4 @@ module.exports = {
   updateUser,
   updateUserAvatar,
   deleteAvatar,
-  refresh,
 };

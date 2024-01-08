@@ -36,7 +36,10 @@ const login = async (email, password) => {
   const loginUser = await UserSchema.findByIdAndUpdate(user._id, {
     token: userToken,
   });
-  return loginUser;
+  return {
+    userToken,
+    loginUser,
+  };
 };
 
 const logout = async (id) => {

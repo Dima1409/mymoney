@@ -9,8 +9,7 @@ const registerUser = async (req, res, next) => {
       status: "success",
       message: "User created",
       data: {
-        email: user.email,
-        name: user.name,
+        user,
       },
     });
   } catch (error) {

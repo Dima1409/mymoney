@@ -3,6 +3,7 @@ const cloudinary = require("cloudinary").v2;
 const { HttpError } = require("../../helpers");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { token } = require("morgan");
 const { SECRET_KEY } = process.env;
 
 const register = async (name, email, password) => {
@@ -17,7 +18,17 @@ const register = async (name, email, password) => {
     password: hashPassword,
     avatarURL: "",
   });
-  return newUser;
+  const payload = {
+    id: newUser._id,
+  };
+  const userToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "48h" });
+  const loginUser = await UserSchema.findByIdAndUpdate(newUser._id, {
+    token: userToken,
+  });
+  return {
+    userToken,
+    loginUser,
+  };
 };
 
 const login = async (email, password) => {
@@ -32,7 +43,7 @@ const login = async (email, password) => {
   const payload = {
     id: user._id,
   };
-  const userToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
+  const userToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "48h" });
   const loginUser = await UserSchema.findByIdAndUpdate(user._id, {
     token: userToken,
   });

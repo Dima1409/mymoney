@@ -1,9 +1,14 @@
 const { model, Schema } = require("mongoose");
 const Joi = require("joi");
+const { walletPattern } = require("../patterns");
 
 const joiAddWalletSchema = Joi.object({
-  name: Joi.string().required().max(12),
+  name: Joi.string().pattern(walletPattern).required(),
   total: Joi.number().default(0),
+});
+
+const joiRenameWalletSchema = Joi.object({
+  name: Joi.string().pattern(walletPattern).required(),
 });
 
 const walletSchema = new Schema(
@@ -11,7 +16,7 @@ const walletSchema = new Schema(
     name: {
       type: String,
       required: true,
-      maxLength: 12,
+      match: walletPattern,
     },
     total: {
       type: Number,
@@ -27,4 +32,5 @@ const WalletSchema = model("wallet", walletSchema);
 module.exports = {
   WalletSchema,
   joiAddWalletSchema,
+  joiRenameWalletSchema,
 };

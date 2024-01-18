@@ -1,7 +1,12 @@
 const service = require("../../services/wallets");
 const { NotFound } = require("http-errors");
+const { joiRenameWalletSchema } = require("../../models/wallets/index");
 
 const renameW = async (req, res, next) => {
+  const { error } = joiRenameWalletSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: "Missing fields" });
+  }
   const { id } = req.params;
   const { name } = req.body;
   const { _id: owner } = req.user;

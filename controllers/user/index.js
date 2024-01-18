@@ -1,7 +1,12 @@
 const services = require("../../services/user");
 const { HttpError } = require("../../helpers");
+const { schemas } = require("../../models/user/index");
 
 const registerUser = async (req, res, next) => {
+  const { error } = schemas.joiRegisterSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: "Missing fields" });
+  }
   try {
     const { name, email, password } = req.body;
     const user = await services.register(name, email, password);
@@ -19,10 +24,13 @@ const registerUser = async (req, res, next) => {
 };
 
 const loginUser = async (req, res, next) => {
+  const { error } = schemas.joiLoginSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: "Missing fields" });
+  }
   try {
     const { email, password } = req.body;
     const user = await services.login(email, password);
-    console.log("LOGIN", user);
     res.status(200).json({
       status: "success",
       message: "User success login",
@@ -36,9 +44,11 @@ const loginUser = async (req, res, next) => {
   }
 };
 
-const getCurrent = async (req, res, next) => {
+const getCurrent = async (req, res) => {
   const { name, email, avatarURL, token } = req.user;
-
+  if (!token) {
+    return res.status(401).json({ message: "Not authorized" });
+  }
   res.status(200).json({
     status: "success",
     message: "Current User",
@@ -54,15 +64,18 @@ const getCurrent = async (req, res, next) => {
 const logoutUser = async (req, res, next) => {
   const { _id } = req.user;
   await services.logout(_id);
-  res.status(201).json({
+  res.status(204).json({
     message: "Logout success",
   });
 };
 
-const updateUser = async (req, res, next) => {
+const updateUser = async (req, res) => {
+  const { error } = schemas.joiUpdateSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: "Missing fields" });
+  }
   const { _id } = req.user;
   const { name, email } = req.body;
-
   const result = await services.updateUserById(
     _id,
     {

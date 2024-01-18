@@ -3,7 +3,6 @@ const cloudinary = require("cloudinary").v2;
 const { HttpError } = require("../../helpers");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { token } = require("morgan");
 const { SECRET_KEY } = process.env;
 
 const register = async (name, email, password) => {

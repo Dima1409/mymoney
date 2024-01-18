@@ -1,18 +1,20 @@
 const { model, Schema } = require("mongoose");
 const Joi = require("joi");
+const { commentPattern, amountPattern } = require("../patterns");
 
 const joiOperationAddSchema = Joi.object({
-  amount: Joi.number().required(),
+  amount: Joi.string().pattern(amountPattern).required(),
   type: Joi.string().required(),
   wallet: Joi.string().required(),
   category: Joi.string().required(),
-  comment: Joi.string().empty("").max(22),
+  comment: Joi.string().pattern(commentPattern).empty("").max(22),
 });
 
 const operationsSchema = new Schema(
   {
     amount: {
-      type: Number,
+      type: String,
+      match: amountPattern,
     },
     type: {
       type: String,
@@ -28,7 +30,7 @@ const operationsSchema = new Schema(
     },
     comment: {
       type: String,
-      maxLength: 22,
+      match: commentPattern,
     },
     owner: { type: Schema.Types.ObjectId, ref: "user", required: true },
   },

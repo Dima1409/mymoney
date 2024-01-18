@@ -1,22 +1,27 @@
 const { model, Schema } = require("mongoose");
 const Joi = require("joi");
-
-const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+const { emailPattern, passwordPattern, namePattern } = require("../patterns");
 
 const joiRegisterSchema = Joi.object({
-  name: Joi.string().min(2).required(),
-  email: Joi.string().pattern(emailRegex).required(),
-  password: Joi.string().min(6).required(),
+  name: Joi.string().pattern(namePattern).required(),
+  email: Joi.string().pattern(emailPattern).required(),
+  password: Joi.string().pattern(passwordPattern).required(),
 });
 
 const joiLoginSchema = Joi.object({
-  email: Joi.string().pattern(emailRegex).required(),
-  password: Joi.string().min(6).required(),
+  email: Joi.string().pattern(emailPattern).required(),
+  password: Joi.string().pattern(passwordPattern).min(6).required(),
+});
+
+const joiUpdateSchema = Joi.object({
+  name: Joi.string().pattern(namePattern).required(),
+  email: Joi.string().pattern(emailPattern).required(),
 });
 
 const schemas = {
   joiLoginSchema,
   joiRegisterSchema,
+  joiUpdateSchema,
 };
 
 const userSchema = new Schema(
@@ -24,17 +29,17 @@ const userSchema = new Schema(
     name: {
       type: String,
       required: [true, "Field is required"],
-      minLength: 2,
+      match: namePattern,
     },
     email: {
       type: String,
       required: [true, "Field is required"],
-      match: emailRegex,
+      match: emailPattern,
       unique: true,
     },
     password: {
       type: String,
-      minLength: 6,
+      match: passwordPattern,
       required: [true, "Field is required"],
     },
     token: {
@@ -43,7 +48,7 @@ const userSchema = new Schema(
     },
     avatarURL: {
       type: String,
-      default: '',
+      default: "",
     },
     imgId: {
       type: String,

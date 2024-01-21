@@ -10,7 +10,7 @@ const joiRegisterSchema = Joi.object({
 
 const joiLoginSchema = Joi.object({
   email: Joi.string().pattern(emailPattern).required(),
-  password: Joi.string().pattern(passwordPattern).min(6).required(),
+  password: Joi.string().pattern(passwordPattern).required(),
 });
 
 const joiUpdateSchema = Joi.object({

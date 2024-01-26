@@ -7,8 +7,8 @@ const getAllWallets = async (id) => {
   );
   if (result.length === 0) {
     const defaultWallets = [
-      { name: "Cash", total: 0, owner: id },
-      { name: "Card", total: 0, owner: id },
+      { name: "Готівка", total: 0, owner: id },
+      { name: "Картка", total: 0, owner: id },
     ];
     await WalletSchema.create(defaultWallets);
   }
@@ -37,7 +37,6 @@ const createNewWallet = async (wallet, ownerId) => {
 
 const deleteWallet = async (id, ownerId) => {
   const wallet = await WalletSchema.findByIdAndRemove(id, { owner: ownerId });
-  // await Operation.deleteMany({ owner: ownerId });
   if (!wallet) {
     throw new Error(`Wallet with id: ${id} not found`);
   }

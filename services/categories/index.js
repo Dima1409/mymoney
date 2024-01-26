@@ -4,10 +4,12 @@ const getAllCategories = async (id) => {
   let result = await CategoriesSchema.find({ owner: id });
   if (result.length === 0) {
     const defaultWallets = [
-      { name: "Work", type: "income", owner: id },
-      { name: "Business", type: "income", owner: id },
-      { name: "Food", type: "expense", owner: id },
-      { name: "Health", type: "expense", owner: id },
+      { name: "Робота", type: "income", owner: id },
+      { name: "Бізнес", type: "income", owner: id },
+      { name: "Додатково", type: "income", owner: id },
+      { name: "Їжа", type: "expense", owner: id },
+      { name: "Здоровя", type: "expense", owner: id },
+      { name: "Автомобіль", type: "expense", owner: id },
     ];
     await CategoriesSchema.create(defaultWallets);
   }

@@ -14,7 +14,7 @@ const register = async (name, email, password) => {
   const newUser = await UserSchema.create({
     name,
     email,
-    password: hashPassword,
+    password,
     avatarURL: "",
   });
   const payload = {
@@ -23,6 +23,7 @@ const register = async (name, email, password) => {
   const userToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "48h" });
   const loginUser = await UserSchema.findByIdAndUpdate(newUser._id, {
     token: userToken,
+    password: hashPassword,
   });
   return {
     userToken,

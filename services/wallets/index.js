@@ -25,7 +25,7 @@ const createNewWallet = async (wallet, ownerId) => {
     owner: ownerId,
   });
   if (existingWallet) {
-    throw new Error(`Wallet '${wallet}' already exists.`);
+    throw new Error(`Wallet ${wallet} already exists`);
   }
   const newWallet = await WalletSchema.create({
     name: wallet,
@@ -33,14 +33,6 @@ const createNewWallet = async (wallet, ownerId) => {
     total: 0,
   });
   return newWallet;
-};
-
-const deleteWallet = async (id, ownerId) => {
-  const wallet = await WalletSchema.findByIdAndRemove(id, { owner: ownerId });
-  if (!wallet) {
-    throw new Error(`Wallet with id: ${id} not found`);
-  }
-  return wallet;
 };
 
 const renameWallet = async (id, ownerId, newName) => {
@@ -65,6 +57,14 @@ const renameWallet = async (id, ownerId, newName) => {
   } catch (error) {
     throw new Error(`Error renaming wallet: ${error.message}`);
   }
+};
+
+const deleteWallet = async (id, ownerId) => {
+  const wallet = await WalletSchema.findByIdAndRemove(id, { owner: ownerId });
+  if (!wallet) {
+    throw new Error(`Wallet with id: ${id} not found`);
+  }
+  return wallet;
 };
 
 const updateWalletTotal = async (wallet, amount, type, ownerId) => {

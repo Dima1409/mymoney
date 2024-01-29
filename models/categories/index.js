@@ -1,9 +1,9 @@
 const { model, Schema } = require("mongoose");
 const Joi = require("joi");
-const { commentPattern } = require("../patterns");
+const { categoryPattern } = require("../patterns");
 
 const joiAddCategorySchema = Joi.object({
-  name: Joi.string().pattern(commentPattern).required(),
+  name: Joi.string().pattern(categoryPattern).required(),
   type: Joi.string().max(14),
 });
 
@@ -11,7 +11,7 @@ const categoriesSchema = new Schema({
   name: {
     type: String,
     required: true,
-    match: commentPattern,
+    match: categoryPattern,
   },
   type: {
     type: String,

@@ -7,7 +7,10 @@ const {
   isValidId,
   isAuth,
 } = require("../../../middlewares");
-const { joiOperationAddSchema } = require("../../../models");
+const {
+  joiOperationAddSchema,
+  joiOperationTransferSchema,
+} = require("../../../models");
 
 routerOperations.get("/", isAuth, operations.getAll);
 
@@ -15,7 +18,7 @@ routerOperations.post(
   "/add",
   isAuth,
   validation(joiOperationAddSchema),
-  ctrlWrapper(operations.createOperationIncome),
+  ctrlWrapper(operations.createOperationIncome)
 );
 
 routerOperations.post(
@@ -23,6 +26,13 @@ routerOperations.post(
   isAuth,
   validation(joiOperationAddSchema),
   ctrlWrapper(operations.createOperationExpense)
+);
+
+routerOperations.post(
+  "/transfer",
+  isAuth,
+  validation(joiOperationTransferSchema),
+  ctrlWrapper(operations.createOperationTransfer)
 );
 
 routerOperations.delete(

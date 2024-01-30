@@ -39,7 +39,36 @@ const operationsSchema = new Schema(
 
 const Operation = model("operation", operationsSchema);
 
+const joiOperationTransferSchema = Joi.object({
+  amount: Joi.string().pattern(amountPattern).required(),
+  walletFrom: Joi.string().required(),
+  walletTo: Joi.string().required(),
+});
+
+const transfersSchema = new Schema(
+  {
+    amount: {
+      type: String,
+      match: amountPattern,
+    },
+    walletFrom: {
+      type: String,
+      required: [true, "Field is required"],
+    },
+    walletTo: {
+      type: String,
+      required: [true, "Field is required"],
+    },
+    owner: { type: Schema.Types.ObjectId, ref: "user", required: true },
+  },
+  { versionKey: false, timestamps: true }
+);
+
+const Transfer = model("transfer", transfersSchema);
+
 module.exports = {
   Operation,
+  Transfer,
   joiOperationAddSchema,
+  joiOperationTransferSchema,
 };

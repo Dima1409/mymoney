@@ -1,4 +1,4 @@
-const { Operation } = require("../../models");
+const { Operation, Transfer } = require("../../models");
 
 const getAllOperations = async (id) => {
   const result = await Operation.find({ owner: id });
@@ -24,6 +24,15 @@ const addOperationExpense = async (body, id) => {
   }
 };
 
+const addOperationTransfer = async (body, id) => {
+  try {
+    const newTransfer = await Transfer.create({ ...body, owner: id });
+    return newTransfer;
+  } catch (error) {
+    throw new Error(`Error creating expense operation: ${error.message}`);
+  }
+};
+
 const deleteOperation = async (id, ownerId) => {
   const result = await Operation.findByIdAndRemove({ _id: id, owner: ownerId });
   console.log("Result Delete", result);
@@ -41,6 +50,7 @@ module.exports = {
   getAllOperations,
   addOperationIncome,
   addOperationExpense,
+  addOperationTransfer,
   deleteOperation,
   updateOperation,
 };

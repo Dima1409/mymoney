@@ -39,6 +39,13 @@ routerOperations.delete(
   "/:id",
   isAuth,
   isValidId,
+  ctrlWrapper(operations.deleteTransfer)
+);
+
+routerOperations.delete(
+  "/:id",
+  isAuth,
+  isValidId,
   ctrlWrapper(operations.deleteOperation)
 );
 

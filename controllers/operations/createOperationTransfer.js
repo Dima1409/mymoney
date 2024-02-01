@@ -18,7 +18,7 @@ const createOperationTransfer = async (req, res, next) => {
   );
   res.status(201).json({
     status: "success",
-    message: "Income operation success",
+    message: "Transfer operation success",
     data: {
       result,
     },

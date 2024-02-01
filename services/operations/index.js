@@ -1,7 +1,9 @@
 const { Operation, Transfer } = require("../../models");
 
 const getAllOperations = async (id) => {
-  const result = await Operation.find({ owner: id });
+  const operations = await Operation.find({ owner: id });
+  const transfers = await Transfer.find({ owner: id });
+  const result = [...operations, ...transfers];
   console.log("Services result operations", result);
   return result;
 };
@@ -39,6 +41,12 @@ const deleteOperation = async (id, ownerId) => {
   return result;
 };
 
+const deleteTransferOperation = async (id, ownerId) => {
+  const result = await Transfer.findByIdAndRemove({ _id: id, owner: ownerId });
+  console.log("Result Delete", result);
+  return result;
+};
+
 const updateOperation = async (id, body) => {
   const result = await Operation.findOneAndUpdate(id, body, {
     new: true,
@@ -52,5 +60,6 @@ module.exports = {
   addOperationExpense,
   addOperationTransfer,
   deleteOperation,
+  deleteTransferOperation,
   updateOperation,
 };

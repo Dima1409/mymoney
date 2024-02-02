@@ -11,6 +11,7 @@ const deleteOperation = async (req, res, next) => {
     (elem) => elem._id.toString() === id.toString()
   );
   const { amount, type, wallet } = operation;
+  console.log("OPERATION", operation);
   const result = await operationService.deleteOperation(id, owner);
   await walletService.updateWalletDeleted(wallet, amount, type, owner);
   if (!result) {

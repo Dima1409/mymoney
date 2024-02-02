@@ -11,7 +11,6 @@ const getAll = async (req, res, next) => {
         result,
       },
     });
-    console.log(result);
   } catch (e) {
     console.error(e);
     next(e);

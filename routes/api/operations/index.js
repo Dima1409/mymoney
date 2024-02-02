@@ -36,7 +36,7 @@ routerOperations.post(
 );
 
 routerOperations.delete(
-  "/:id",
+  "/transfer/:id",
   isAuth,
   isValidId,
   ctrlWrapper(operations.deleteTransfer)

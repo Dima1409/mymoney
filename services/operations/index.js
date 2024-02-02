@@ -4,7 +4,6 @@ const getAllOperations = async (id) => {
   const operations = await Operation.find({ owner: id });
   const transfers = await Transfer.find({ owner: id });
   const result = [...operations, ...transfers];
-  console.log("Services result operations", result);
   return result;
 };
 

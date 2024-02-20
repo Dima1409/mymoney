@@ -30,27 +30,32 @@ const addOperationTransfer = async (body, id) => {
     const newTransfer = await Transfer.create({ ...body, owner: id });
     return newTransfer;
   } catch (error) {
-    throw new Error(`Error creating expense operation: ${error.message}`);
+    throw new Error(`Error creating transfer operation: ${error.message}`);
   }
 };
 
 const deleteOperation = async (id, ownerId) => {
   const result = await Operation.findByIdAndRemove({ _id: id, owner: ownerId });
-  console.log("Result Delete", result);
   return result;
 };
 
 const deleteTransferOperation = async (id, ownerId) => {
   const result = await Transfer.findByIdAndRemove({ _id: id, owner: ownerId });
-  console.log("Result Delete", result);
   return result;
 };
 
-const updateOperation = async (id, body) => {
-  const result = await Operation.findOneAndUpdate(id, body, {
-    new: true,
-  });
-  return result;
+const updateOperation = async (id, ownerId, body) => {
+  try {
+    const result = await Operation.findOneAndUpdate(
+      { _id: id, owner: ownerId },
+      { $set: body },
+      { new: true }
+    );
+    console.log("update", result);
+    return result;
+  } catch (error) {
+    throw new Error(`Error updating operation: ${error.message}`);
+  }
 };
 
 module.exports = {

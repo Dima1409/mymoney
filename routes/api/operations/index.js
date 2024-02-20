@@ -35,6 +35,13 @@ routerOperations.post(
   ctrlWrapper(operations.createOperationTransfer)
 );
 
+routerOperations.patch(
+  "/edit/:id",
+  isAuth,
+  validation(joiOperationAddSchema),
+  ctrlWrapper(operations.updateOperation)
+);
+
 routerOperations.delete(
   "/transfer/:id",
   isAuth,

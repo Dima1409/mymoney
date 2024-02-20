@@ -4,6 +4,7 @@ const { createOperationExpense } = require("./createOperationExpense");
 const { deleteOperation } = require("./deleteOperation");
 const { createOperationTransfer } = require("./createOperationTransfer");
 const { deleteTransfer } = require("./deleteTransfer");
+const { updateOperation } = require("./updateOperation");
 
 module.exports = {
   getAll,
@@ -12,4 +13,5 @@ module.exports = {
   deleteOperation,
   createOperationTransfer,
   deleteTransfer,
+  updateOperation,
 };

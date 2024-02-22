@@ -18,10 +18,27 @@ const updateOperation = async (req, res, next) => {
   if (!operation) {
     return next(NotFound(`Operation with id=${id} not found`));
   }
-  const { amount, type, wallet } = req.body;
+  const { amount: newAmount, type, wallet } = req.body;
   const result = await operationService.updateOperation(id, owner, req.body);
-
-  await walletService.updateWalletTotal(wallet, amount, type, owner);
+  const resAmount =
+    Number(newAmount) === Number(operation.amount)
+      ? Number(newAmount)
+      : Math.abs(Number(newAmount) - Number(operation.amount));
+  if (operation.wallet.toLowerCase() !== wallet.toLowerCase()) {
+    await walletService.updateWalletTotalTransfer(
+      operation.wallet,
+      wallet,
+      resAmount,
+      owner
+    );
+  }
+  await walletService.updateWalletTotalEdit(
+    operation.wallet,
+    operation.amount,
+    newAmount,
+    type,
+    owner
+  );
   if (!result) {
     return next(NotFound(`Operation with id=${id} not found`));
   }

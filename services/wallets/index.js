@@ -95,6 +95,64 @@ const updateWalletTotal = async (wallet, amount, type, ownerId) => {
   }
 };
 
+const updateWalletTotalEdit = async (
+  walletName,
+  amount,
+  newAmount,
+  type,
+  ownerId
+) => {
+  try {
+    const wallet = await WalletSchema.findOne({
+      name: walletName,
+      owner: ownerId,
+    });
+    if (!wallet) {
+      throw new Error("Wallet not found");
+    }
+    const updateQuery = () => {
+      let totalUpdate = 0;
+
+      switch (type) {
+        case "income":
+          totalUpdate =
+            Number(wallet.total) - Number(amount) + Number(newAmount);
+          break;
+        case "expense":
+          totalUpdate =
+            Number(wallet.total) + Number(amount) - Number(newAmount);
+          break;
+        case "transfer":
+          console.log("transfer update");
+          break;
+        default:
+          break;
+      }
+
+      return {
+        $set: {
+          total: totalUpdate,
+        },
+      };
+    };
+
+    const updatedWallet = await WalletSchema.findOneAndUpdate(
+      {
+        _id: wallet._id,
+        owner: ownerId,
+      },
+      updateQuery(),
+      { new: true }
+    );
+    if (!updatedWallet) {
+      throw new Error("Wallet not found");
+    }
+    return { updatedWallet };
+  } catch (error) {
+    throw new Error(`Error updating wallet total: ${error.message}`);
+  }
+};
+
 const updateWalletTotalTransfer = async (
   walletFrom,
   walletTo,
@@ -222,4 +280,5 @@ module.exports = {
   deleteWallet,
   updateWalletDeleted,
   renameWallet,
+  updateWalletTotalEdit,
 };

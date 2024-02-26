@@ -51,7 +51,19 @@ const updateOperation = async (id, ownerId, body) => {
       { $set: body },
       { new: true }
     );
-    console.log("update", result);
+    return result;
+  } catch (error) {
+    throw new Error(`Error updating operation: ${error.message}`);
+  }
+};
+
+const updateOperationTransfer = async (id, ownerId, body) => {
+  try {
+    const result = await Transfer.findOneAndUpdate(
+      { _id: id, owner: ownerId },
+      { $set: body },
+      { new: true }
+    );
     return result;
   } catch (error) {
     throw new Error(`Error updating operation: ${error.message}`);
@@ -66,4 +78,5 @@ module.exports = {
   deleteOperation,
   deleteTransferOperation,
   updateOperation,
+  updateOperationTransfer,
 };

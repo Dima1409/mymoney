@@ -42,6 +42,13 @@ routerOperations.patch(
   ctrlWrapper(operations.updateOperation)
 );
 
+routerOperations.patch(
+  "/edit-transfer/:id",
+  isAuth,
+  validation(joiOperationTransferSchema),
+  ctrlWrapper(operations.updateOperationTransfer)
+);
+
 routerOperations.delete(
   "/transfer/:id",
   isAuth,

@@ -8,6 +8,7 @@ const {
   isAuth,
 } = require("../../../middlewares");
 const { joiAddWalletSchema } = require("../../../models");
+const { joiEditWalletTotalSchema } = require("../../../models/wallets");
 
 routerWallets.get("/", isAuth, ctrlWrapper(wallets.getAllTotal));
 routerWallets.post(
@@ -22,6 +23,12 @@ routerWallets.patch(
   isAuth,
   validation(joiAddWalletSchema),
   ctrlWrapper(wallets.renameW)
+);
+routerWallets.put(
+  "/:id",
+  isAuth,
+  validation(joiEditWalletTotalSchema),
+  ctrlWrapper(wallets.updateTotal)
 );
 
 module.exports = { routerWallets };

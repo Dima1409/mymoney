@@ -59,6 +59,26 @@ const renameWallet = async (id, ownerId, newName) => {
   }
 };
 
+const updateTotalById = async (id, ownerId, newTotal) => {
+  try {
+    const existingWallet = await WalletSchema.findOne({
+      _id: id,
+      owner: ownerId,
+    });
+    if (!existingWallet) {
+      throw new Error("Wallet not found");
+    }
+    const updatedWallet = await WalletSchema.findByIdAndUpdate(
+      { _id: id, owner: ownerId },
+      { $set: { total: newTotal } },
+      { new: true }
+    );
+    return updatedWallet;
+  } catch (error) {
+    throw new Error(`Error updating wallet total: ${error.message}`);
+  }
+};
+
 const deleteWallet = async (id, ownerId) => {
   const wallet = await WalletSchema.findByIdAndRemove(id, { owner: ownerId });
   if (!wallet) {
@@ -280,5 +300,6 @@ module.exports = {
   deleteWallet,
   updateWalletDeleted,
   renameWallet,
+  updateTotalById,
   updateWalletTotalEdit,
 };

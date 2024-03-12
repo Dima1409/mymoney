@@ -6,6 +6,7 @@ const namePattern =
 const commentPattern = /^[\p{L}]{3,14}$/u;
 const amountPattern = /^(0\.([1-9]\d?|0[1-9])|[1-9]\d*(\.\d{1,2})?)$/;
 const walletPattern = /^[\p{L} ]{2,12}$/u;
+const walletTotalPattern = /^(0(\.\d{1,2})?|[1-9]\d*(\.\d{1,2})?)$/;
 const categoryPattern = /^[\p{L} ]{2,12}$/u;
 
 module.exports = {
@@ -15,5 +16,6 @@ module.exports = {
   commentPattern,
   amountPattern,
   walletPattern,
+  walletTotalPattern,
   categoryPattern,
 };

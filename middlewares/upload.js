@@ -11,7 +11,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   folder: "public",
-  allowedFormats: ["jpg", "png"],
+  allowedFormats: ["jpg", "png", "jpeg", "webp"],
   params: {
     width: 500,
     crop: "fill",
@@ -21,6 +21,9 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const uploadCloud = multer({ storage });
+const uploadCloud = multer({
+  storage,
+  limits: { fileSize: 200 * 1024 },
+});
 
 module.exports = uploadCloud;
